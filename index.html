@@ -1,0 +1,1305 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>커리어 사주</title>
+<meta name="description" content="생년월일시를 넣으면 타고난 재능, 맞는 직무, 이직 타이밍, 커리어 하이까지 쉽게 풀어드려요.">
+<meta property="og:title" content="커리어 사주">
+<meta property="og:description" content="타고난 재능부터 커리어 하이까지, 사주를 몰라도 읽히는 커리어 풀이">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#fbf6f0; --card:#ffffff; --card2:#fcf1ee; --line:#f0e3dc; --line2:#e8d4cc;
+  --fg:#3d302e; --muted:#7f6c68; --faint:#ab9891;
+  --pink:#e2738b; --pink2:#c95a73; --pink-soft:#fce6ea; --pink-line:#f2c6cf;
+  --rose1:#fff0f1; --rose2:#fdf6f1; --rose-line:#f3d3d8;
+  --good:#3f8f62; --good-soft:#e5f3ea; --warn:#b97a1f; --warn-soft:#fbf0dc; --risk:#cc4f63; --risk-soft:#fde7ea;
+  --mok:#4f8a4f; --hwa:#d0594b; --to:#b8892f; --geum:#8b8791; --su:#4a7fbf;
+  --r:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.75 'Pretendard','Noto Sans KR',system-ui,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto;padding:0 16px 120px}
+b{font-weight:700}
+p{margin:8px 0}
+button{font:inherit}
+
+/* ── 입력 화면 ── */
+.intro{padding:46px 0 10px;text-align:center}
+.intro .orb{margin:0 auto 18px}
+.intro .eyebrow{color:var(--pink2);font-weight:700;font-size:13px;letter-spacing:.06em}
+.intro h1{font-size:30px;line-height:1.35;margin:8px 0 10px;font-weight:400;letter-spacing:-.02em}
+.intro h1 b{font-weight:800}
+.intro .sub{color:var(--muted);font-size:15px;margin:0}
+.chs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:24px 0 8px;text-align:left}
+.chs div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;color:var(--muted)}
+.chs div b{display:block;color:var(--fg);font-size:14px}
+.chs div span{color:var(--pink2);font-weight:700;font-size:11.5px}
+form.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 18px;margin:16px 0;box-shadow:0 10px 30px rgba(201,90,115,.07)}
+.field{margin:0 0 18px}
+.field > label,.field .lab{display:block;font-weight:700;font-size:14px;margin-bottom:8px}
+.field .lab small,.field > label small{font-weight:500;color:var(--faint);margin-left:6px}
+.row3{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+select,input[type=text]{width:100%;font:inherit;font-size:15px;color:var(--fg);background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:12px 12px;appearance:none;-webkit-appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 17px) 52%,calc(100% - 12px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+select:focus,input:focus{outline:2px solid var(--pink);outline-offset:1px}
+select:disabled{opacity:.45}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0}
+.seg span{display:block;text-align:center;padding:12px;border-radius:12px;border:1px solid var(--line2);background:var(--card2);font-weight:600;cursor:pointer}
+.seg input:checked + span{background:var(--pink);border-color:var(--pink);color:#fff}
+.seg input:focus-visible + span{outline:2px solid var(--pink2);outline-offset:2px}
+.hint{font-size:12.5px;color:var(--faint);margin-top:6px}
+.err{color:var(--risk);font-size:13.5px;min-height:20px;margin:0 0 6px}
+.cta{display:block;width:100%;border:0;border-radius:16px;background:var(--pink);color:#fff;font-weight:700;font-size:17px;padding:16px;cursor:pointer;box-shadow:0 10px 24px rgba(226,115,139,.35)}
+.cta:hover{background:var(--pink2)}
+.privacy{font-size:12.5px;color:var(--faint);text-align:center;margin-top:12px}
+
+/* ── 결과 상단 바 ── */
+.appbar{position:sticky;top:0;z-index:5;background:rgba(251,246,240,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);margin:0 -16px;padding:12px 16px 0;border-bottom:1px solid var(--line)}
+.appbar .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.appbar .ttl{font-weight:700;font-size:16px}
+.appbar .back{border:0;background:none;color:var(--muted);font-size:13.5px;cursor:pointer;padding:4px 0}
+.appbar .share{border:1px solid var(--pink-line);background:var(--card);color:var(--pink2);font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px;cursor:pointer}
+[role=tablist]{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px}
+[role=tablist]::-webkit-scrollbar{display:none}
+[role=tab]{flex:none;font-size:13px;font-weight:600;background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:7px 14px;cursor:pointer}
+[role=tab][aria-selected=true]{background:var(--fg);color:#fff;border-color:var(--fg)}
+[role=tab]:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+[role=tabpanel][hidden]{display:none}
+
+.hero{padding:24px 0 4px}
+.eyebrow{color:var(--pink2);font-weight:700;font-size:13px;letter-spacing:.02em}
+.hero h1{font-size:28px;line-height:1.35;font-weight:400;margin:6px 0 6px;letter-spacing:-.02em}
+.hero h1 b{font-weight:800}
+.meta{color:var(--faint);font-size:12.5px}
+
+.persona{margin:20px 0 10px;border-radius:var(--r);padding:22px 20px;background:linear-gradient(160deg,#fde3e8,#fdf3ec 75%);border:1px solid var(--rose-line)}
+.persona .k{color:var(--pink2);font-size:13px;font-weight:700}
+.persona .nm{font-size:22px;font-weight:800;line-height:1.45;margin:6px 0 10px}
+.persona p{font-size:14.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chips span{font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:999px;background:rgba(255,255,255,.75);color:var(--pink2)}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.key{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.key .l{font-size:12px;color:var(--faint)}
+.key .v{font-weight:800;font-size:16px;margin-top:4px;line-height:1.4}
+.key .v.b{color:var(--pink2)} .key .v.r{color:var(--risk)}
+.key .d{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.55}
+.legend{font-size:12px;color:var(--faint);line-height:2.1}
+.notice{border:1px solid #f0d9ad;background:var(--warn-soft);color:#7a5418;border-radius:16px;padding:14px 16px;font-size:13.5px;margin:14px 0}
+.notice button{border:1px solid #e3c48a;background:#fff;color:#7a5418;border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:700;cursor:pointer;margin-top:6px}
+
+.lv{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:2px;background:var(--card2);color:var(--muted);line-height:1.6}
+.lv.k{color:var(--good);background:var(--good-soft)} .lv.g{color:var(--fg);background:#f1e8e4}
+.lv.t{color:var(--warn);background:var(--warn-soft)} .lv.m{color:var(--pink2);background:var(--pink-soft)}
+
+.ch{display:grid;grid-template-columns:1fr 112px;align-items:center;gap:6px;padding:32px 0 8px}
+.ch .no{color:var(--pink2);font-weight:700;font-size:15px}
+.ch h2{font-size:26px;line-height:1.38;font-weight:400;margin:6px 0 10px;letter-spacing:-.02em}
+.ch h2 b{font-weight:800}
+.ch .sub{color:var(--muted);font-size:14.5px;margin:0}
+.ch .sub em{font-style:normal;color:var(--pink2);font-weight:600}
+.orb{width:108px;height:108px;border-radius:50%;display:grid;place-items:center;font-size:52px;position:relative;
+  background:radial-gradient(circle at 32% 28%,#fff 0,#ffe9ee 28%,#f7c1cd 62%,#f0a9b9 100%);
+  box-shadow:0 14px 36px rgba(226,115,139,.35),inset 0 -8px 20px rgba(201,90,115,.25),inset 0 8px 18px rgba(255,255,255,.8)}
+.orb span{filter:drop-shadow(0 6px 10px rgba(201,90,115,.35))}
+
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 10px}
+.toc a{display:block;text-decoration:none;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px}
+.toc a:hover{border-color:var(--pink-line)}
+.toc .t{font-weight:700;font-size:15px;line-height:1.45;margin:12px 0 6px}
+.toc .t em{font-style:normal;color:var(--pink2)}
+.toc .d{font-size:12.5px;color:var(--muted);line-height:1.6}
+.ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:21px;background:var(--pink-soft);border:1px solid var(--pink-line);flex:none}
+
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px;margin:14px 0;scroll-margin-top:120px}
+.item .hd{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.item .hd .n{font-size:12px;color:var(--pink2);font-weight:700}
+.item .hd h3{font-size:18px;line-height:1.4;margin:0;font-weight:700}
+.item .hd .grow{flex:1}
+.item .badge{flex:none;font-size:11px;font-weight:700;color:var(--muted);padding:3px 10px;border:1px solid var(--line2);border-radius:999px;background:var(--card2)}
+.item h4{font-size:15px;margin:18px 0 6px}
+.item.premium{background:linear-gradient(180deg,var(--rose1),var(--rose2));border-color:var(--rose-line)}
+.checks{list-style:none;margin:6px 0 14px;padding:0}
+.checks li{position:relative;padding:5px 0 5px 30px;font-size:14.5px}
+.checks li::before{content:"✓";position:absolute;left:0;top:7px;width:20px;height:20px;border-radius:50%;background:var(--pink);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;line-height:1}
+.step{margin:16px 0 4px;font-size:13px;font-weight:700;color:var(--pink2);display:flex;align-items:center;gap:8px}
+.step::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pink)}
+.scene{background:var(--card2);border-left:3px solid var(--pink);border-radius:0 12px 12px 0;padding:12px 14px;margin:12px 0;font-size:14.5px}
+.tip{background:var(--good-soft);border:1px solid #c9e6d3;border-radius:14px;padding:12px 14px;margin:12px 0;font-size:14.5px}
+.tip > b:first-child{color:var(--good);display:block;font-size:13px;margin-bottom:2px}
+.warnbox{background:var(--risk-soft);border:1px solid #f4c7cf;border-radius:14px;padding:12px 14px;margin:12px 0;font-size:14.5px}
+.warnbox > b:first-child{color:var(--risk);display:block;font-size:13px;margin-bottom:2px}
+.check{font-size:13.5px;background:var(--card2);border-radius:14px;padding:12px 14px;margin:14px 0 2px;color:var(--muted)}
+.check .y{color:var(--good);font-weight:700;margin-right:4px}.check .n{color:var(--risk);font-weight:700;margin-right:4px}
+.small{font-size:12.5px;color:var(--faint)}
+.qa{list-style:none;padding:0;margin:8px 0}
+.qa li{background:var(--card2);border-radius:12px;padding:10px 14px;margin:8px 0;font-size:14.5px}
+.qa li b{color:var(--pink2)}
+ul.plain,ol.plain{padding-left:20px;margin:8px 0}
+ul.plain li,ol.plain li{margin:8px 0}
+.sig{display:block;font-size:12.5px;color:var(--faint);margin-top:2px}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+th,td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12px;background:var(--card2)}
+tr:last-child td{border-bottom:0}
+.scroll{overflow-x:auto}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:1px 9px;background:#f3ebe7;color:var(--muted);white-space:nowrap}
+.tag.bad{color:var(--risk);background:var(--risk-soft)} .tag.ok{color:var(--good);background:var(--good-soft)} .tag.mid{color:var(--warn);background:var(--warn-soft)}
+
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:16px;text-align:center;padding:14px 6px 12px}
+.tile .e{font-size:26px}
+.tile .k{font-weight:700;font-size:14px;margin-top:4px}
+.tile .s{font-size:11.5px;color:var(--faint)}
+.tile .v{font-weight:800;font-size:18px;margin-top:6px}
+.tile .v.hi{color:var(--pink2)} .tile .v.lo{color:var(--su)}
+.bars .row{display:grid;grid-template-columns:104px 1fr 92px;gap:10px;align-items:center;margin:12px 0 2px;font-size:13px}
+.bars .row > span:first-child{font-weight:600}
+.bars .why{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.track{height:8px;background:#f1e6e1;border-radius:6px;overflow:hidden}
+.fill{height:100%;border-radius:6px;background:var(--pink)}
+.top3 .it{margin:18px 0 6px}
+.top3 .it .h{display:flex;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:8px;font-size:15px}
+.top3 .fill{background:linear-gradient(90deg,#f0a0b2,#e2738b)}
+.top3 .ex{font-size:13px;color:var(--muted);margin:4px 0 8px}
+
+.fit{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.fit .lab{font-size:15px}
+.fit .lab b{display:block;font-size:19px}
+.fit .big{display:flex;gap:8px}
+.fit .big div{width:62px;height:76px;border-radius:14px;background:#fff;border:1px solid var(--rose-line);display:grid;place-items:center;text-align:center;line-height:1.2;box-shadow:0 6px 16px rgba(226,115,139,.15)}
+.fit .big strong{font-size:24px;display:block}
+.fit .big small{font-size:10.5px;color:var(--muted)}
+.fit-label{color:var(--pink2);font-weight:700;margin:18px 0 4px;font-size:15.5px}
+
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.type{background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center;font-size:12.5px;color:var(--muted)}
+.type .nm{font-size:16px;font-weight:800;color:var(--fg);margin:4px 0 6px}
+.type.on{background:linear-gradient(180deg,#fde3e8,#fff4f2);border-color:var(--pink);box-shadow:0 8px 22px rgba(226,115,139,.2)}
+
+.calbox .top{display:flex;justify-content:space-between;align-items:center;color:var(--pink2);font-size:14px;font-weight:700}
+.calnav{display:flex;gap:6px}
+.calnav button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line2);background:var(--card);color:var(--fg);cursor:pointer;font-size:15px}
+.calnav button:disabled{opacity:.3;cursor:default}
+.calbody{display:grid;grid-template-columns:1fr 228px;gap:12px;align-items:start;margin-top:16px}
+.calbody .mn{font-size:30px;font-weight:600;line-height:1.2}
+.calbody .yr{font-size:30px;font-weight:800;line-height:1.3}
+.calbody .gd{color:var(--muted);font-size:13.5px;margin-top:16px;line-height:1.6}
+.calbody .gd b{color:var(--fg);display:block}
+.calbody .mo{margin-top:8px}
+.dots{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dots .w{font-size:11.5px;color:var(--faint);text-align:center}
+.dots .d{aspect-ratio:1;border-radius:8px;background:#f5ece8;font-size:10px;color:#bba8a1;display:grid;place-items:center}
+.dots .d.e{visibility:hidden}
+.dots .d.good{background:var(--pink);color:#fff;font-weight:700;box-shadow:0 4px 10px rgba(226,115,139,.45)}
+.dots .d.move{box-shadow:inset 0 0 0 1.5px var(--pink);color:var(--pink2);font-weight:700}
+.dots .d.today{color:var(--fg);box-shadow:inset 0 0 0 1px var(--muted)}
+.calleg{font-size:12px;color:var(--faint);margin-top:10px}
+.calleg i{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:-1px;margin:0 4px 0 8px}
+
+.yrs{list-style:none;margin:10px 0;padding:0;position:relative}
+.yrs::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line2)}
+.yrs li{position:relative;padding:4px 0 14px 30px;font-size:14px}
+.yrs li::before{content:"";position:absolute;left:1px;top:9px;width:14px;height:14px;border-radius:50%;background:var(--card);border:2px solid var(--line2)}
+.yrs li.up::before{background:var(--pink);border-color:var(--pink);box-shadow:0 0 0 4px var(--pink-soft)}
+.yrs li.down::before{border-color:var(--risk)}
+.yrs .y{font-weight:800;margin-right:8px;font-size:15px}
+.yrs .dd{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 4px}
+.pl{background:var(--card);border:1px solid var(--line);border-radius:16px;text-align:center;padding:12px 4px 10px}
+.pl.me{border-color:var(--pink);background:var(--pink-soft)}
+.pl .lb{font-size:11px;color:var(--faint)}
+.pl .gz{font-size:26px;line-height:1.25;font-weight:700;margin:4px 0 2px;font-family:'Noto Serif KR','Pretendard',serif}
+.pl .tg{font-size:11.5px;color:var(--muted)}
+.mok{color:var(--mok)}.hwa{color:var(--hwa)}.to{color:var(--to)}.geum{color:var(--geum)}.su{color:var(--su)}
+
+.next{display:block;width:100%;margin:28px 0 0;padding:16px;border:0;border-radius:18px;background:var(--pink);color:#fff;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 10px 24px rgba(226,115,139,.3)}
+.next small{display:block;font-weight:500;color:#ffe3e9;font-size:12px}
+footer{margin-top:40px;font-size:12px;color:var(--faint);line-height:1.7}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--fg);color:#fff;border-radius:999px;padding:9px 16px;font-size:13px;opacity:0;transition:.2s;pointer-events:none}
+.toast.on{opacity:1}
+
+@media (max-width:520px){
+  .intro h1,.hero h1,.ch h2{font-size:23px}
+  .ch{grid-template-columns:1fr 84px}
+  .ch .orb{width:80px;height:80px;font-size:40px}
+  .pl .gz{font-size:21px}
+  .toc .t{font-size:14px}
+  .calbody{grid-template-columns:1fr}
+  .calbody .gd{margin-top:6px}
+  .bars .row{grid-template-columns:92px 1fr 84px;font-size:12.5px}
+  .fit{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══════════ 입력 화면 ═══════════ -->
+<section id="inputView">
+  <div class="intro">
+    <div class="orb" aria-hidden="true"><span>🔮</span></div>
+    <div class="eyebrow">CAREER SAJU</div>
+    <h1>타고난 재능부터<br><b>커리어 하이까지</b></h1>
+    <p class="sub">생년월일시를 넣으면, 사주를 몰라도 읽히는<br>커리어 풀이를 바로 보여드려요.</p>
+    <div class="chs">
+      <div><span>CHAPTER 1</span><b>타고난 재능·맞는 직무</b>나에게 맞는 일 TOP3</div>
+      <div><span>CHAPTER 2</span><b>나에게 맞는 커리어</b>승진형 · 점프형 · 창업형</div>
+      <div><span>CHAPTER 3</span><b>떠나고 싶은 이유</b>이직운 캘린더 · 달별 흐름</div>
+      <div><span>CHAPTER 4</span><b>커리어 하이</b>판이 바뀌는 해 · 돈 붙는 때</div>
+    </div>
+  </div>
+
+  <form class="card" id="f" novalidate>
+    <div class="field">
+      <label for="name">이름 <small>닉네임도 괜찮아요</small></label>
+      <input type="text" id="name" maxlength="12" placeholder="예: 지민" autocomplete="off">
+    </div>
+    <div class="field">
+      <span class="lab" id="dlab">생년월일 <small>양력</small></span>
+      <div class="row3" role="group" aria-labelledby="dlab">
+        <select id="by" aria-label="태어난 해"></select>
+        <select id="bm" aria-label="태어난 달"></select>
+        <select id="bd" aria-label="태어난 날"></select>
+      </div>
+      <div class="hint">음력 생일만 알면, 먼저 양력으로 바꿔서 넣어 주세요.</div>
+    </div>
+    <div class="field">
+      <span class="lab" id="tlab">태어난 시각 <small>24시간 기준 (0시~23시)</small></span>
+      <div class="row2" role="group" aria-labelledby="tlab">
+        <select id="bh" aria-label="태어난 시"></select>
+        <select id="bi" aria-label="태어난 분"></select>
+      </div>
+      <div class="hint">예) 오후 3시 20분 → 15시 20분 · 모르면 「모름」을 골라 주세요.</div>
+    </div>
+    <div class="field">
+      <span class="lab" id="glab">성별 <small>10년 흐름의 방향이 달라져요</small></span>
+      <div class="seg" role="radiogroup" aria-labelledby="glab">
+        <label><input type="radio" name="g" value="F" checked><span>여성</span></label>
+        <label><input type="radio" name="g" value="M"><span>남성</span></label>
+      </div>
+    </div>
+    <p class="err" id="err" role="alert"></p>
+    <button type="submit" class="cta">내 커리어 사주 보기</button>
+    <p class="privacy">🔒 입력한 정보는 이 기기 안에서만 계산돼요. 어디에도 저장하거나 보내지 않아요.</p>
+  </form>
+</section>
+
+<!-- ═══════════ 결과 화면 ═══════════ -->
+<section id="resultView" hidden>
+  <div class="appbar">
+    <div class="top">
+      <button type="button" class="back" id="again">← 다시 입력</button>
+      <span class="ttl">커리어 사주</span>
+      <button type="button" class="share" id="share">링크 복사</button>
+    </div>
+    <div role="tablist" aria-label="챕터">
+      <button role="tab" id="t1" aria-selected="true" aria-controls="p1">1 · 타고난 재능</button>
+      <button role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1">2 · 나에게 맞는 길</button>
+      <button role="tab" id="t3" aria-selected="false" aria-controls="p3" tabindex="-1">3 · 떠나고 싶은 이유</button>
+      <button role="tab" id="t4" aria-selected="false" aria-controls="p4" tabindex="-1">4 · 커리어 하이</button>
+      <button role="tab" id="t5" aria-selected="false" aria-controls="p5" tabindex="-1">풀이 근거</button>
+    </div>
+  </div>
+  <div id="head"></div>
+  <section role="tabpanel" id="p1" aria-labelledby="t1"></section>
+  <section role="tabpanel" id="p2" aria-labelledby="t2" hidden></section>
+  <section role="tabpanel" id="p3" aria-labelledby="t3" hidden></section>
+  <section role="tabpanel" id="p4" aria-labelledby="t4" hidden></section>
+  <section role="tabpanel" id="p5" aria-labelledby="t5" hidden></section>
+  <footer>결혼·건강·수명은 다루지 않아요. 사주는 판단을 돕는 재료이고, 실제 결정은 연봉·계약·경력 같은 현실 조건이 먼저예요. 계산은 이 기기 안에서만 이뤄져요.</footer>
+</section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="engine.js"></script>
+<script>
+(function () {
+'use strict';
+var SE = window.SajuEngine;
+var $ = function (id) { return document.getElementById(id); };
+
+/* ══════════ 기본 상수 ══════════ */
+var BR_EL = [4, 2, 0, 0, 2, 1, 1, 2, 3, 3, 2, 4];
+var EL_CLS = ['mok', 'hwa', 'to', 'geum', 'su'];
+var EL_PLAIN = ['나무', '불', '흙', '쇠', '물'];
+var STEM_K = ['갑', '을', '병', '정', '무', '기', '경', '신', '임', '계'];
+var BR_K = ['자', '축', '인', '묘', '진', '사', '오', '미', '신', '유', '술', '해'];
+var GI = {}; SE.TENGOD.forEach(function (n, i) { GI[n] = Math.floor(i / 2); });
+var GP = ['버티는 힘', '내보내는 힘', '쓰는 힘', '붙잡는 틀', '받아들이는 힘'];
+var GK = ['비겁', '식상', '재성', '관성', '인성'];
+var GMEAN = ['나 자신과 동료. 버티고 밀고 나가는 힘', '표현·결과물·아이디어. 밖으로 내보내는 힘', '돈·성과·현실 감각. 손에 잡히게 만드는 힘', '책임·규칙·평가·직함. 나를 잡아 주는 틀', '배움·분석·자격. 나를 채워 주는 힘'];
+var GSHORT = ['나 자신·동료', '표현·결과물', '돈·성과', '책임·기준', '배움·충전'];
+var YM = { 0: 2, 2: 8, 1: 11, 3: 5 };   // 삼합 그룹(지지 %4) → 역마 지지
+
+/* ══════════ 해석 규칙표 ══════════
+   문장 규칙: 해요체 · 단언 · 추상명사로 끝내지 않기 · 실천은 언제·무엇을·얼마나 */
+var STEM_IMG = ['큰 나무', '풀과 덩굴', '한낮의 해', '등불', '큰 산', '논밭의 흙', '단단한 원석', '다듬은 보석', '큰 강', '빗물'];
+var STEM_DESC = [
+  '곧게 위로 자라는 큰 나무 같은 기운을 타고났어요. 방향이 정해지면 흔들림 없이 밀고 나가요.',
+  '어디든 뻗어 나가는 풀과 덩굴 같은 기운을 타고났어요. 환경에 맞춰 유연하게 길을 찾아요.',
+  '한낮의 해 같은 기운을 타고났어요. 있는 곳을 환하게 만들고 사람들 시선을 모아요.',
+  '어둠을 밝히는 등불 같은 기운을 타고났어요. 한 사람, 한 가지 일에 깊이 집중해요.',
+  '듬직한 큰 산 같은 기운을 타고났어요. 쉽게 흔들리지 않고 사람들이 기대는 중심이 돼요.',
+  '씨앗을 키우는 논밭의 흙 같은 기운을 타고났어요. 사람과 일을 품고 길러 내요.',
+  '아직 다듬어지지 않은 원석 같은 기운을 타고났어요. 단단하고 결단이 빨라요.',
+  '이미 다듬어진 보석 같은 기운을 타고났어요. 섬세하고 정확하며 기준이 높아요.',
+  '흐르는 큰 강 같은 기운을 타고났어요. 넓게 보고, 막히면 돌아서라도 나아가요.',
+  '땅을 적시는 빗물 같은 기운을 타고났어요. 조용히 스며들어 주변을 살려요.'
+];
+var PERSONA_STRONG = ['끝까지 밀고 나가는', '만들고 표현할수록 빛나는', '현실 감각으로 성과를 챙기는', '압박 속에서 더 단단해지는', '배울수록 깊어지는'];
+var NEED = ['곁에서 같이 버텨 줄 사람', '마음껏 풀어낼 출구', '손에 잡히는 성과', '나를 잡아 주는 기준', '배우고 충전할 시간'];
+var TAG_STRONG = [['#독립심', '#뚝심'], ['#아이디어', '#표현력'], ['#현실감각', '#성과지향'], ['#책임감', '#위기에강함'], ['#학습력', '#깊이']];
+var TAG_WEAK = ['#혼자버티기', '#혼자삭힘', '#내몫챙기기서툼', '#틀없으면흐려짐', '#충전부족'];
+var TILE = [['🧱', '뚝심', '버티고 밀고 나가기'], ['💡', '표현력', '아이디어·결과물'], ['📈', '현실 감각', '성과·돈 챙기기'], ['🛡️', '책임감', '기준·위기 대응'], ['📚', '배우는 힘', '분석·흡수']];
+
+var GENIUS = [
+  { head: '누가 뭐래도 내 방식으로 끝까지 밀고 나가는 능력',
+    scene: ['남들이 포기하는 일도 「일단 해 보자」며 끝까지 붙잡아요.', '남에게 맡기기보다 내 손으로 처리하는 게 편해요.', '경쟁이 붙으면 오히려 힘이 나요.'] },
+  { head: '보고 들은 걸 새롭게 짜서, 남들이 알아듣게 풀어내는 능력',
+    scene: ['회의에서 남의 안을 들으면 빠진 부분이 먼저 보여요.', '받은 양식을 그대로 못 쓰고 더 낫게 고쳐요.', '설명할 때 듣는 사람에 맞춰 순서를 바꿔 말해요.'] },
+  { head: '상황을 현실적으로 계산해서 손에 잡히는 결과로 만드는 능력',
+    scene: ['일을 받으면 「얼마나 들고, 뭐가 남는지」부터 계산해요.', '막연한 계획을 숫자와 일정으로 바꿔요.', '여러 일을 동시에 굴리면서도 놓치지 않아요.'] },
+  { head: '높은 기준과 압박이 걸리면 오히려 차분해지고, 빈틈없는 결과물로 바꾸는 능력',
+    scene: ['일이 터지면 다들 당황할 때 먼저 「뭐부터 해야 하지」 순서를 정리해요.', '규칙이나 기준을 받으면 예외 상황까지 꼼꼼히 확인해요.', '숫자 하나, 문장 하나가 틀린 결과물은 내놓지 못해요.'] },
+  { head: '새로운 걸 빨리 흡수해서 깊이 있는 전문성으로 쌓는 능력',
+    scene: ['처음 보는 분야도 자료를 찾아 금방 큰 그림을 잡아요.', '「왜 그런지」를 이해해야 움직여요.', '한번 배운 건 정리해 두었다가 다음에 다시 써먹어요.'] }
+];
+var JOB_CORE = [
+  '같은 일을 하는 사람들 사이에서 겨루고 협업하며 크는',
+  '무언가를 짜서 사람들에게 풀어 전달하는',
+  '성과를 숫자와 실물로 만들어 내는',
+  '조직 안에서 책임을 맡아 처리하는',
+  '배우고 자격을 쌓아 전문성으로 길을 여는'
+];
+var SHADOW = [
+  '혼자 버티는 힘이 약해서, 일이 몰리면 쉽게 지쳐요. 도와 달라는 말을 늦게 하는 편이에요.',
+  '쌓인 생각과 스트레스를 밖으로 풀어내는 힘이 약해서, 힘들어도 혼자 삼켜요. 주변에서는 「늘 괜찮아 보인다」고 생각하지만 속으로는 열이 쌓이고 있을 때가 많아요.',
+  '한 일을 성과나 돈으로 챙기는 힘이 약해서, 일은 많이 했는데 내 몫이 작게 남는 경험이 반복돼요.',
+  '나를 잡아 주는 틀이 약해서, 마감이나 기준이 밖에서 걸리지 않으면 일이 늘어지거나 방향을 잃어요.',
+  '배우고 충전하는 힘이 약해서, 계속 내보내기만 하다가 어느 순간 바닥나요.'
+];
+var NEED_LINE = ['같이 버텨 줄 사람', '풀어낼 출구', '내 몫을 챙기는 장치', '밖에서 걸어 주는 기준', '충전하는 시간'];
+var TIP = [
+  '혼자 하는 일이라도 중간 점검을 같이 볼 동료 한 명을 정해 두세요. 주 1회 15분이면 충분해요.',
+  '큰 일이 끝난 다음 날은 달력에 「회의 없음」으로 미리 막아 두세요. 그리고 일주일에 한 번, 한 일을 세 줄로 적어 밖에 공유해 보세요.',
+  '프로젝트가 끝나면 48시간 안에 「규모·기간·결과」 숫자 세 개를 적어 두세요. 그게 연봉 협상 재료가 돼요.',
+  '스스로 마감일을 정하고 그걸 누군가에게 미리 말해 두세요. 밖에서 걸린 기준이 있을 때 힘이 나요.',
+  '일주일에 2시간은 업무와 상관없이 배우는 시간으로 달력에 먼저 넣어 두세요.'
+];
+var CHECK_YES = [
+  '남이 포기한 일을 끝까지 밀어붙여 결과를 낸 경험이 있다면',
+  '「알아서 다시 짜 봐」라고 맡겨진 일에서 결과가 좋았던 경험이 있다면',
+  '숫자와 일정으로 일을 굴릴 때 가장 일이 잘 풀렸다면',
+  '갑자기 문제가 터진 상황에서 오히려 침착하게 처리하고, 끝나고 나서 한꺼번에 지쳤던 경험이 있다면',
+  '새 분야를 빨리 익혀서 「어떻게 벌써 알아?」라는 말을 들은 적이 있다면'
+];
+var CHECK_NO = [
+  '혼자 끌고 가는 일보다 시키는 대로 하는 일이 훨씬 편했다면',
+  '정해진 절차를 반복하는 일에서 꾸준히 만족했다면',
+  '숫자·돈 계산이 들어가는 일이 늘 부담스러웠다면',
+  '기준이나 마감이 없는 자유로운 환경에서 오히려 일이 잘 됐다면',
+  '공부나 자료 조사보다 몸으로 부딪히는 일이 훨씬 잘 맞았다면'
+];
+var CIRC = [
+  [0, 1, '버틴 힘이 결과물로 이어지는', '버티는 힘이 표현으로 잘 이어지지 않아, 마음먹은 걸 밖으로 꺼내기까지 오래 걸려요'],
+  [1, 2, '만든 것이 성과·돈으로 이어지는', '만든 것이 성과나 돈으로 잘 남지 않아요'],
+  [2, 3, '성과가 자리·직함으로 이어지는', '성과를 내도 그게 자리로 잘 이어지지 않아요'],
+  [3, 4, '압박이 배움과 실력으로 바뀌는', '압박이 배움으로 바뀌지 못하고 소모로 끝나기 쉬워요'],
+  [4, 0, '배운 것이 내 힘이 되는', '배운 게 내 힘으로 쌓이기까지 시간이 걸려요']
+];
+var CIRC_NICK = ['', '만든 게 돈이 되는 구조', '성과가 자리가 되는 구조', '고생이 그대로 경력이 되는 구조', '배움이 그대로 힘이 되는 구조'];
+
+var BAR_ST = {
+  '튼튼': ['ok', '튼튼', '제 역할을 잘 해요.'],
+  '마찰': ['mid', '마찰', '살아 있지만 다른 글자와 부딪혀서 가끔 흔들려요.'],
+  '약함': ['bad', '약함', '글자는 있는데 힘을 잘 못 써요.'],
+  '숨음': ['bad', '숨음', '겉으로는 안 보이고 안쪽에 숨어 있어요. 운에서 들어올 때 깨어나요.'],
+  '없음': ['bad', '없음', '사주에 없어요. 운에서 들어올 때만 쓸 수 있어요.']
+};
+var FACTOR = { '튼튼': 1, '마찰': 0.7, '약함': 0.35, '숨음': 0.2, '없음': 0 };
+
+var JOBS = [
+  { n: '기획·전략', ex: '서비스 기획, 전략기획, 사업기획', use: { 1: 2, 2: 1 },
+    core: '흩어진 정보를 모아 새 판을 짜는 일이에요.', caution: '결과가 문서로 끝나고 실행은 남이 하는 경우가 많아요. 실행까지 같이 가는 자리인지 확인하세요.' },
+  { n: '분석·심사·리스크 관리', ex: '데이터 분석, 여신심사, 품질보증(QA), 내부감사, 컴플라이언스', use: { 3: 2, 4: 2 },
+    core: '기준을 받아 꼼꼼히 파고들어 판단하는 일이에요.', caution: '「틀리면 안 되는」 일이라 완벽주의가 심해질 수 있어요. 검토 기준을 문서로 정하고 그 이상은 붙잡지 마세요.' },
+  { n: '교육·콘텐츠', ex: '교육 기획, 강의, 콘텐츠 제작, 브랜드 콘텐츠', use: { 1: 2, 4: 1 },
+    core: '알고 있는 걸 남이 알아듣게 풀어 전달하는 일이에요.', caution: '계속 내보내기만 하면 바닥나요. 새로 배우는 시간을 업무 안에 넣을 수 있는 곳이 좋아요.' },
+  { n: '영업·사업개발', ex: 'B2B 영업, 사업개발, 제휴, 세일즈', use: { 2: 2, 0: 1 },
+    core: '기회를 찾아 실제 계약과 매출로 만드는 일이에요.', caution: '숫자 압박이 매일 걸려요. 목표가 개인에게 바로 걸리는지, 팀 단위인지 꼭 확인하세요.' },
+  { n: '재무·운영 관리', ex: '재무·회계, 구매, 운영 관리, 경영지원', use: { 2: 2, 3: 1 },
+    core: '돈과 일정, 자원을 정확하게 관리하는 일이에요.', caution: '반복 업무가 많아요. 개선안을 낼 수 있는 자리인지 보면 오래 갈 수 있어요.' },
+  { n: '인사·행정·공공', ex: '인사제도, 총무, 공공기관 행정, 조직 운영', use: { 3: 2, 4: 1, 0: 1 },
+    core: '체계와 규정 안에서 조직을 굴리는 일이에요.', caution: '사람들 요구를 받아 주는 일(민원·조율)이 하루의 절반을 넘으면 빨리 지쳐요.' },
+  { n: '연구·전문 기술', ex: '연구원, 개발자, 엔지니어, 기술 문서', use: { 4: 2, 1: 1 },
+    core: '한 분야를 깊게 파서 전문 결과물을 만드는 일이에요.', caution: '혼자 파고들다 고립되기 쉬워요. 결과를 정기적으로 공유하는 자리가 있는지 보세요.' },
+  { n: '디자인·크리에이티브', ex: '디자인, 영상, 브랜딩, 카피라이팅', use: { 1: 2, 0: 1 },
+    core: '내 감각으로 새 결과물을 만들어 내는 일이에요.', caution: '평가가 취향에 갈릴 때 흔들리기 쉬워요. 내 기준을 말로 설명하는 연습이 도움이 돼요.' },
+  { n: '상담·코칭·HR', ex: '상담, 코칭, 채용, 조직문화', use: { 4: 1, 0: 1, 1: 1 },
+    core: '사람 이야기를 듣고 방향을 같이 찾는 일이에요.', caution: '남의 감정을 오래 받아 주면 내 에너지가 빠져요. 하루 상담 시간 상한을 정해 두세요.' },
+  { n: '창업·프리랜서', ex: '1인 사업, 프리랜서, 스타트업 창업', use: { 1: 1, 2: 2, 0: 1 },
+    core: '내가 만든 걸 직접 팔아 돈으로 바꾸는 일이에요.', caution: '수입이 들쭉날쭉해요. 회사에 다니며 6개월 작게 팔아 본 뒤 결정하세요.' }
+];
+var FIT_WORK = [
+  ['기준·규정을 보고 검토하고 판단하는 일', [3, 4]],
+  ['자료 분석·정리·보고서 작성', [4, 1]],
+  ['아이디어를 내고 기획·제작하는 일', [1]],
+  ['사람을 상대하며 설득·영업하는 일', [2, 0]],
+  ['마감이 연달아 붙는 운영·관리 업무', [3, 2]]
+];
+
+var STR_TXT = [
+  '<b>뚝심</b><br>한번 맡은 일은 끝까지 밀고 나가요. 남이 포기한 일을 마무리하는 역할에서 빛나요.',
+  '<b>아이디어와 표현</b><br>기존 방식에서 고칠 점을 찾고, 남들이 알아듣게 풀어 설명해요.',
+  '<b>현실 감각</b><br>일을 숫자와 일정으로 바꿔서 굴려요. 성과를 손에 잡히게 만들어요.',
+  '<b>책임감과 위기 대응</b><br>문제가 터지면 우선순위부터 잡아요. 기준을 지키는 일에서 믿음을 얻어요.',
+  '<b>흡수력과 깊이</b><br>새 분야를 빨리 배우고, 경험을 지식으로 정리해서 다음에 써먹어요.'
+];
+var WEAK_TXT = [
+  '<b>혼자 떠안기</b><br>버티는 힘이 약해서, 일이 몰리면 쉽게 지쳐요. 도움을 늦게 청해요.',
+  '<b>혼자 삭히기</b><br>쌓인 생각과 스트레스를 밖으로 풀 출구가 좁아요. 잘한 일도 잘 드러내지 않아요.',
+  '<b>내 몫 챙기기</b><br>일은 했는데 성과나 돈으로 내 이름이 잘 안 남아요.',
+  '<b>틀이 없으면 흐려짐</b><br>마감·기준이 밖에서 걸리지 않으면 일이 늘어지거나 방향을 잃어요.',
+  '<b>충전 부족</b><br>배우고 쉬는 시간이 부족해서, 계속 내보내기만 하다 바닥나요.'
+];
+var OVER_TXT = [
+  '<b>고집</b><br>내 방식이 강해서 남의 의견을 늦게 받아들여요. 협업에서 부딪힐 때가 있어요.',
+  '<b>과열</b><br>고칠 곳이 계속 보여서 「완료」 선언이 늦어요. 너무 많이 고치다 지쳐요.',
+  '<b>일 벌이기</b><br>기회가 보이면 여러 일을 동시에 벌여서 마무리가 밀려요.',
+  '<b>압박 과부하</b><br>책임을 거절하지 못해서, 잘할수록 일이 더 붙어요.',
+  '<b>생각 과잉</b><br>충분히 알아야 움직이는 편이라 시작이 늦어질 때가 있어요.'
+];
+var ROLE = ['끝까지 책임지는 실행 담당', '기획·개선 담당', '일정·예산 관리 담당', '위기 대응·최종 검수 담당', '리서치·분석 담당'];
+
+var ENV_OVER = [
+  ['모두가 같은 몫을 두고 경쟁하는 곳', '버티는 힘이 이미 넘쳐서, 경쟁이 붙으면 부딪힘이 커져요.', '동료와 같은 성과를 두고 다투는 일이 한 분기에 두 번 이상 생길 때'],
+  ['계속 내놓기만 하는 곳', '내보내는 힘이 이미 넘쳐서, 마감이 쉼 없이 붙으면 과열돼요.', '쉬는 날에도 머릿속으로 일을 고치고 있을 때'],
+  ['숫자 압박이 매일 걸리는 곳', '쓰는 힘이 이미 넘쳐서, 실적 압박이 더해지면 일을 너무 많이 벌여요.', '동시에 진행하는 일이 5개를 넘을 때'],
+  ['책임은 많은데 기준은 흐린 곳', '붙잡는 틀이 이미 넘쳐서, 「알아서 잘 해 줘」로 일이 쌓이면 소모돼요.', '원래 내 일이 아닌 일이 3개 이상 넘어왔을 때'],
+  ['배우기만 하고 실행할 기회가 없는 곳', '받아들이는 힘이 이미 넘쳐서, 공부만 쌓이고 결과가 안 나오면 답답해져요.', '교육·자료 조사만 3개월 넘게 이어질 때']
+];
+var ENV_LACK = [
+  ['혼자 다 맡는 1인 담당 자리', '버티는 힘이 부족해서, 기댈 동료가 없으면 빨리 지쳐요.', '한 달 넘게 상의할 사람 없이 혼자 결정하고 있을 때'],
+  ['정리하고 표현할 시간 없이 응대만 하는 곳', '내보내는 힘이 부족해서, 전화·메신저·회의로 하루가 채워지면 회복이 안 돼요.', '그런 주가 2주 넘게 이어지고, 주말에 쉬어도 월요일에 피곤할 때'],
+  ['성과가 개인에게 보이지 않는 곳', '쓰는 힘이 부족해서, 팀 단위로만 평가받으면 내 몫이 사라져요.', '평가 면담에서 내가 한 일을 설명할 숫자가 없을 때'],
+  ['기준도 마감도 없는 자유로운 곳', '붙잡는 틀이 부족해서, 밖에서 걸어 주는 기준이 없으면 일이 흐려져요.', '마감 없는 일이 한 달 넘게 진척이 없을 때'],
+  ['배울 것 없이 반복만 하는 곳', '받아들이는 힘이 부족해서, 새로 배울 게 없으면 금방 시들해져요.', '6개월 동안 새로 배운 게 하나도 떠오르지 않을 때']
+];
+
+var ORG = {
+  ladder: { p: '「붙잡는 틀」이 살아 있고, 그중에서도 「정해진 단계」를 뜻하는 기운이 있어요. <b>평가 기준이 분명한 조직에서 한 단계씩 인정받을 때</b> 가장 힘을 내요. 「자유롭게 알아서 해」보다 「이 기준으로 해 줘」가 오히려 편한 사람이에요.',
+    good: ['평가 기준·승진 요건이 <b>문서로 공개된</b> 곳', '역할 분담이 명확하고 내 담당 범위가 정해진 곳', '교육·자격 취득을 지원하고 평가에도 반영하는 곳'],
+    bad: ['평가가 그때그때 바뀌고 「알아서 잘」이 기준인 곳', '한 사람이 여러 부서 일을 같이 하는 곳', '개인 실적 순위를 매주 공개하는 곳'],
+    q: ['이 직무의 평가 기준이나 승진 요건이 정해져 있나요?', '문서로 있다고 하면 좋은 신호예요.'] },
+  big: { p: '「붙잡는 틀」이 있는데, 차근차근 오는 쪽보다 <b>큰 일이 한꺼번에 떨어지는 방식</b>이에요. 압박 속에서 크는 사람이라, 승진 사다리보다 큰 일을 해낸 이력으로 인정받아요.',
+    good: ['큰 프로젝트를 <b>통째로 맡기는</b> 곳', '성과를 낸 사람에게 빠르게 기회를 주는 곳', '피드백과 코칭이 붙는 곳'],
+    bad: ['연차 순으로만 역할이 정해지는 곳', '작은 일만 계속 쪼개서 주는 곳', '압박만 있고 지원은 없는 곳'],
+    q: ['입사하면 처음 맡게 될 가장 큰 프로젝트는 뭔가요?', '큰 일을 맡겨 주는 곳인지 바로 알 수 있어요.'] },
+  free: { p: '「붙잡는 틀」이 약하거나 숨어 있어요. 직급이 올라가며 크는 구조보다 <b>「이 일은 저 사람한테」라는 평판으로 인정받는</b> 쪽이에요.',
+    good: ['결과물에 <b>만든 사람 이름이 남는</b> 곳', '프로젝트 단위로 평가하는 곳', '일하는 방식을 스스로 정할 수 있는 곳'],
+    bad: ['연차 순으로 역할이 정해지는 곳', '결재 단계가 많아 바꿀 수 없는 곳', '성과가 팀 단위로만 집계되는 곳'],
+    q: ['결과물에 담당자 이름이 남나요? 성과를 개인 단위로도 보나요?', '내 기여가 보이는 구조인지 확인하는 질문이에요.'] }
+};
+var Q_NEED = [
+  ['같이 일하게 될 팀원은 몇 명인가요?', '혼자 다 맡는 자리인지 확인해요.'],
+  ['제 아이디어를 제안하고 실행해 볼 수 있는 구조인가요?', '풀어낼 출구가 있는지 보는 질문이에요.'],
+  ['성과는 어떻게 보상에 반영되나요?', '한 만큼 돌아오는지 확인해요.'],
+  ['제 역할과 평가 기준은 어떻게 정해지나요?', '기준이 분명한지 확인해요.'],
+  ['업무 관련 교육이나 자격증 취득을 지원하나요?', '배우고 충전할 기회가 있는지 확인해요.']
+];
+
+var TYPE_INFO = {
+  '승진형': { icon: '🪜', d: '한 조직 안에서 단계를 밟아 올라가는 형',
+    why: '「붙잡는 틀」과 「받아들이는 힘」이 함께 살아 있어서, 조직이 주는 압박과 기준이 실력으로 바뀌는 사람이에요. <b>한 조직에서 3~5년 단위로 직급을 올려 가는 방식</b>이 가장 잘 맞아요.',
+    tip: '승진 심사에서 두 번 연속 밀렸다면, 그때는 버티기보다 부서 이동이나 이직을 같이 알아보세요.' },
+  '점프형': { icon: '🚀', d: '전문성을 들고 회사를 옮기며 몸값을 올리는 형',
+    why: '사주가 「정해진 길」보다 「새 길」을 뜻하는 기운으로 많이 채워져 있어요. <b>2~4년 단위로 전문성을 들고 자리를 옮기며 몸값을 올리는 방식</b>이 맞아요.',
+    tip: '옮길 때 「무엇을 만들었는지」 증빙이 몸값을 정해요. 프로젝트가 끝날 때마다 성과를 숫자 세 개로 적어 두세요.' },
+  '창업형': { icon: '🏗️', d: '내가 만든 걸 직접 팔아 돈을 버는 형',
+    why: '만든 것이 돈으로 이어지는 통로가 열려 있고, 버티는 힘도 있어요. <b>내가 만든 걸 직접 팔아 돈을 버는 방식</b>이 맞아요.',
+    tip: '처음부터 크게 벌이기보다, 회사에 다니면서 6개월 동안 작게 팔아 보는 실험부터 해 보세요.' }
+};
+
+var EVENT = ['같이 하거나 겨루는 사람이 늘어나요', '만들고 내보낼 일이 늘어나요', '돈과 실무가 늘어나요', '책임과 자리가 걸려요', '배움과 도움이 들어와요'];
+var GROUP_DO = ['같이 할 사람을 정하고 몫을 숫자로 적어 두기', '만든 것 하나를 밖에 내놓기(발표·공개·제출)', '들어오는 돈의 비율을 정해 먼저 떼어 두기', '맡는 책임의 범위를 문서로 정해 두기', '자격·교육 하나를 끝까지 마치기'];
+var DAEUN_G = ['같이 버텨 줄 동료와 경쟁자가 함께 늘어나요', '만들고 표현할 일이 늘어나요', '돈과 실무, 성과 책임이 늘어나요', '책임과 자리가 늘어나요', '배움과 자격, 도와주는 사람이 들어와요'];
+
+var CELL_AREA = { '연간': '처음 사회에 나설 때의 모습', '연지': '타고난 토대·배경', '월간': '사회로 나가는 첫 통로', '월지': '<b>직업의 본질</b>', '일지': '일상과 쉼', '시간': '결과물을 내놓는 방식', '시지': '결과가 쌓이는 곳' };
+var CELL_TXT = {
+  '연': ['출발할 때부터 경쟁하고 비교되는 환경이었어요. 또래 사이에서 내 몫을 지키며 시작했어요.',
+        '어릴 때부터 말·재주·표현으로 자기를 알렸어요. 첫 명함이 「잘 만드는 사람」이에요.',
+        '일찍부터 현실 감각이 생겼어요. 「얼마 드는가」를 먼저 세는 배경에서 출발했어요.',
+        '규칙과 체면이 중요한 배경이었어요. 따라야 할 기준이 먼저 주어진 출발이에요.',
+        '전공·자격처럼 「공부해 둔 것」이 첫 명함이 돼요.'],
+  '월': ['일하는 자리에 같은 일을 하는 동료·경쟁자가 늘 있어요. 혼자보다 팀 안에서 겨루며 커요.',
+        '일의 본질이 「만들어서 내놓기」예요. 기획·발표·제작에서 성과가 잡혀요.',
+        '일의 본질이 「성과를 숫자로 만들기」예요. 관리하고 굴리는 일에서 자리를 잡아요.',
+        '일의 본질이 「책임지고 처리하기」예요. 위계와 기준이 있는 곳에서 자리를 찾아요.',
+        '일의 본질이 「배우고 전문성 쌓기」예요. 자격과 지식이 길을 열어요.'],
+  '일': ['쉬는 시간에도 내 페이스가 중요해요. 혼자 운동하거나 내 일을 하며 회복해요.',
+        '쉬는 날에도 뭔가를 만들거나 고치고 있어요. 일상이 늘 작업 모드예요.',
+        '일상에서도 계획과 돈 관리를 챙겨요. 생활이 정돈돼야 마음이 놓여요.',
+        '일상에서도 스스로 정한 규칙이 많아요. 퇴근 후에도 「해야 할 일」이 따라와요.',
+        '혼자 정리하고 공부하는 시간이 충전기예요. 이 시간이 깨지면 회복이 안 돼요.'],
+  '시': ['결과물을 낼 때 옆에 같은 몫을 가진 사람이 서요. 공동 작업에서 내 몫이 흐려지기 쉬워요.',
+        '결과물을 꾸준히 만들어 내놓아요. 작업물이 쌓여서 이름이 돼요.',
+        '결과가 돈과 실물로 쌓여요. 한 만큼 손에 남기기 좋은 자리예요.',
+        '결과가 직함과 공식 인정으로 돌아와요. 책임 있는 자리가 끝까지 따라와요.',
+        '결과가 지식과 자격으로 쌓여요. 나중에 가르치거나 정리하는 쪽으로 가요.']
+};
+
+/* ══════════ 도우미 ══════════ */
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function bat(w) { var c = w.charCodeAt(w.length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 !== 0; }
+function iga(w) { return bat(w) ? '이' : '가'; }
+function eun(w) { return bat(w) ? '은' : '는'; }
+function eul(w) { return bat(w) ? '을' : '를'; }
+function gwa(w) { return bat(w) ? '과' : '와'; }
+function ro(w) { var c = w.charCodeAt(w.length - 1); if (c < 0xAC00 || c > 0xD7A3) return '로'; var j = (c - 0xAC00) % 28; return (j === 0 || j === 8) ? '로' : '으로'; }
+function ieyo(w) { return bat(w) ? '이에요' : '예요'; }
+function qg(g) { return '「' + GP[g] + '」'; }
+function first(s) { return s.split(/\.\s/)[0].replace(/\.$/, ''); }
+var WEAPON = ['끝까지 밀고 나가는 뚝심', '새롭게 짜고 풀어내는 힘', '현실을 성과로 바꾸는 힘', '압박을 실력으로 바꾸는 힘', '빨리 배워 깊어지는 힘'];
+var NEED_CHECK = ['같이 버텨 줄 동료가 있는가', '내 아이디어를 낼 자리가 있는가', '성과가 보상으로 바로 이어지는가', '역할과 평가 기준이 분명한가', '배우고 쉴 시간이 보장되는가'];
+function sEl(s) { return Math.floor(s / 2); }
+function pct(n) { return Math.round(n * 100); }
+function badge(t) { return '<span class="badge">' + t + '</span>'; }
+function lvl(k) { return { '계산': '<span class="lv k">계산</span>', '사주 구조': '<span class="lv g">사주 구조</span>', '옛 해석': '<span class="lv t">옛 해석</span>', '참고': '<span class="lv">참고</span>', '우리 기준': '<span class="lv m">우리 기준</span>' }[k]; }
+function item(id, icon, no, title, bdg, body, prem) {
+  return '<article class="item' + (prem ? ' premium' : '') + '" id="' + id + '"><div class="hd"><div class="ico">' + icon + '</div><div class="grow"><div class="n">' + no + '</div><h3>' + title + '</h3></div>' + (bdg ? badge(bdg) : '') + '</div>' + body + '</article>';
+}
+function chHead(no, t1, t2, sub, icon) {
+  return '<div class="ch"><div><div class="no">' + no + '</div><h2>' + t1 + '<br><b>' + t2 + '</b></h2><p class="sub">' + sub + '</p></div><div class="orb" aria-hidden="true"><span>' + icon + '</span></div></div>';
+}
+function toc(list) {
+  return '<nav class="toc">' + list.map(function (a) { return '<a href="#' + a[0] + '"><div class="ico">' + a[1] + '</div><div class="t">' + a[2] + '</div><div class="d">' + a[3] + '</div></a>'; }).join('') + '</nav>';
+}
+function nextBtn(t, title, sub) { return '<button type="button" class="next" data-go="' + t + '">' + title + '<small>' + sub + '</small></button>'; }
+function tagV(v, txt) { return '<span class="tag ' + (v === 'hi' ? 'ok' : v === 'warn' ? 'bad' : '') + '">' + txt + '</span>'; }
+
+/* ══════════ 분석 ══════════ */
+function analyze(IN) {
+  var R = SE.computeAll({ year: IN.year, month: IN.month, day: IN.day, hour: IN.hour, minute: IN.minute, gender: IN.gender });
+  var A = { R: R, IN: IN, N: IN.name || '당신' };
+  A.dm = R.saju.day.s; A.dmEl = sEl(A.dm);
+  var pw = R.power.weighted, tot = pw.reduce(function (a, b) { return a + b; }, 0) || 1;
+  A.elOfG = function (g) { return (A.dmEl + g) % 5; };
+  A.gOfEl = function (e) { return (e - A.dmEl + 5) % 5; };
+  A.share = [0, 1, 2, 3, 4].map(function (g) { return pw[A.elOfG(g)] / tot; });
+  A.status = R.flow.stages.map(function (st) {
+    if (st.surface === 0) return st.hidden > 0 ? '숨음' : '없음';
+    if (st.weakened) return '약함';
+    if (st.strainedOnly) return '마찰';
+    return '튼튼';
+  });
+  A.fac = A.status.map(function (s) { return FACTOR[s]; });
+  var yo = R.yongsin, hiEl = 0, loEl = 0;
+  pw.forEach(function (v, i) { if (v > pw[hiEl]) hiEl = i; if (v < pw[loEl]) loEl = i; });
+  A.yp = (yo.primary !== null && yo.primary !== undefined) ? yo.primary : loEl;
+  A.ypFallback = (yo.primary === null || yo.primary === undefined);
+  A.ys = (yo.suwon !== null && yo.suwon !== undefined) ? yo.suwon : (A.yp + 4) % 5;
+  var av = (yo.eokbu && yo.eokbu.avoid && yo.eokbu.avoid.length) ? yo.eokbu.avoid[0] : hiEl;
+  if (av === A.yp) av = hiEl === A.yp ? null : hiEl;
+  A.av = av;
+  A.ypg = A.gOfEl(A.yp); A.avg = av === null ? null : A.gOfEl(av);
+  A.order = [0, 1, 2, 3, 4].sort(function (a, b) { return A.share[b] - A.share[a]; });
+  A.topG = A.order[0];
+  A.gbi = (R.geupso && R.geupso.critical) ? R.geupso.critical.bi : null;
+  A.byLab = {}; R.cells.forEach(function (c) { A.byLab[c.label] = c; });
+  A.monthG = GI[A.byLab['월'].branchTenGod];
+  A.tc = R.tenGodCount;
+  A.gwanMix = A.tc['편관'] > 0 && A.tc['정관'] > 0;
+  var pyeon = 0; R.cells.forEach(function (c) {
+    [c.stemTenGod, c.branchTenGod].forEach(function (t) { var i = SE.TENGOD.indexOf(t); if (i >= 0 && i % 2 === 0) pyeon++; });
+  });
+  A.pyeon = pyeon; A.cellsN = R.cells.length * 2 - 1;
+  A.ymBr = []; [R.saju.year.b, R.saju.day.b].forEach(function (b) { var y = YM[b % 4]; if (A.ymBr.indexOf(y) < 0) A.ymBr.push(y); });
+  A.natalYm = (R.sinsal || []).filter(function (s) { return s.kind === '역마'; })[0] || null;
+  A.now = new Date(); A.nowY = A.now.getFullYear(); A.nowM = A.now.getMonth() + 1;
+
+  // 해 판정 (seun) 25년
+  A.years = [];
+  for (var y = A.nowY; y <= A.nowY + 25; y++) {
+    var p = SE.computeSaju(y, 7, 1, 12, 0).year;
+    var j = judge(A, p.s, p.b); j.year = y; j.age = y - IN.year; A.years.push(j);
+  }
+  A.yearOf = function (y) { return A.years.filter(function (x) { return x.year === y; })[0]; };
+  // 대운
+  A.daeun = (R.daeun.list || []).map(function (d) { var j = judge(A, d.s, d.b); j.year = d.year; j.age = d.age; j.gz = d.gz; return j; });
+  A.curD = null; A.nextD = null;
+  A.daeun.forEach(function (d, i) { if (d.year <= A.nowY) { A.curD = d; A.nextD = A.daeun[i + 1] || null; } });
+  if (!A.curD && A.daeun.length) A.nextD = A.daeun[0];
+  A.daeunAt = function (y) { var c = null; A.daeun.forEach(function (d) { if (d.year <= y) c = d; }); return c; };
+  // 월 14개
+  A.months = [];
+  for (var k = 0; k < 14; k++) {
+    var dt = new Date(A.nowY, A.nowM - 1 + k, 15);
+    var mp = SE.computeSaju(dt.getFullYear(), dt.getMonth() + 1, 15, 12, 0).month;
+    var mj = judge(A, mp.s, mp.b); mj.y = dt.getFullYear(); mj.m = dt.getMonth() + 1; A.months.push(mj);
+  }
+  // 커리어 유형
+  A.types = careerTypes(A);
+  A.jobs = rankJobs(A);
+  return A;
+}
+
+function judge(A, s, b) {
+  var R = A.R, sc = 0, why = [], yp = A.yp, ys = A.ys, av = A.av;
+  var rel = SE.transitRelations(s, b, R.pillars, A.gbi), se = sEl(s), be = BR_EL[b];
+  var upYp = se === yp, dnYp = be === yp;
+  if (upYp) sc += 2; else if (se === ys) sc += 1; else if (se === av) sc -= 1;
+  if (dnYp) sc += 2; else if (be === ys) sc += 1; else if (be === av) sc -= 1;
+  if (upYp && dnYp) why.push('부족한 기운이 위아래로 가득 들어와요');
+  else if (upYp || dnYp) why.push('부족한 기운이 들어와요');
+  else if (se === ys || be === ys) why.push('부족한 기운을 만들어 주는 기운이 들어와요');
+  if ((se === av && av !== null) && (be === av)) why.push('이미 넘치는 기운이 위아래로 더 들어와요');
+  else if (av !== null && (se === av || be === av)) why.push('이미 넘치는 기운이 더 들어와요');
+  rel.forEach(function (r) {
+    if (r.geupso) {
+      if (/합/.test(r.t)) { sc += 2; why.push('회복 자리가 단단해져요'); }
+      else if (r.t === '충') { sc -= 3; why.unshift('회복 자리가 정면으로 흔들려요'); }
+      else if (/형|파|해/.test(r.t)) { sc -= 1; why.push('회복 자리에 잔마찰이 생겨요'); }
+    }
+    if (r.t === '천간충' && yp !== null) {
+      var c = R.pillars.filter(function (q) { return q.label === r.at.charAt(0); })[0];
+      if (c && sEl(c.s) === yp) { sc -= 2; why.unshift('부족한 기운을 정면으로 쳐요'); }
+    }
+    if (/완성/.test(r.t) && r.el !== undefined) {
+      if (r.el === yp) { sc += 2; why.push('필요한 기운이 한 덩어리로 모여요'); }
+      else if (r.el === av) { sc -= 2; why.unshift('넘치는 기운이 한 덩어리가 돼요'); }
+    }
+  });
+  var gb = false; R.pillars.forEach(function (q) { if (sEl(q.s) === yp && Math.abs(q.s - s) === 5) gb = true; });
+  if (gb) { sc -= 2; why.unshift('필요한 기운이 있는데 묶여서 못 써요'); }
+  var seen = {}; why = why.filter(function (w) { if (seen[w]) return false; seen[w] = 1; return true; });
+  var PRI = ['회복 자리가 정면으로 흔들려요', '부족한 기운을 정면으로 쳐요', '필요한 기운이 있는데 묶여서 못 써요', '넘치는 기운이 한 덩어리가 돼요', '부족한 기운이 위아래로 가득 들어와요', '회복 자리가 단단해져요', '필요한 기운이 한 덩어리로 모여요'];
+  why.sort(function (a, c) { var x = PRI.indexOf(a), y = PRI.indexOf(c); return (x < 0 ? 99 : x) - (y < 0 ? 99 : y); });
+  return { s: s, b: b, sc: sc, v: sc >= 3 ? 'hi' : (sc <= -2 ? 'warn' : 'mid'), why: why,
+    g: GI[SE.TENGOD[SE.stemTenGod(A.dm, s)]], gb: GI[SE.TENGOD[SE.branchTenGod(A.dm, b)]],
+    ym: A.ymBr.indexOf(b) >= 0, gz: SE.STEM_C[s] + SE.BR_C[b], gzK: STEM_K[s] + BR_K[b] };
+}
+
+function careerTypes(A) {
+  var f = A.fac, tc = A.tc, cat = A.R.strength.category;
+  var promo = (f[3] >= 0.7 ? 2 : f[3] > 0 ? 1 : 0) + (f[4] >= 0.7 ? 2 : f[4] > 0 ? 1 : 0) + (tc['정관'] > 0 ? 1 : 0);
+  var start = (f[1] >= 0.7 ? 2 : f[1] > 0.3 ? 1 : 0) + (f[2] >= 0.7 ? 2 : f[2] > 0.3 ? 1 : 0) + (cat !== '신약' ? 1 : 0) + (f[0] >= 0.7 ? 1 : 0) - 1;
+  var chung = A.R.relations.filter(function (r) { return r.t === '충'; }).length;
+  var jump = (A.pyeon >= 5 ? 2 : A.pyeon >= 4 ? 1 : 0) + (tc['상관'] > 0 ? 1 : 0) + (chung ? 1 : 0) + (A.natalYm ? 1 : 0) + (f[3] < 0.7 ? 1 : 0);
+  var S = { '승진형': promo, '점프형': jump, '창업형': start };
+  var names = ['승진형', '점프형', '창업형'].sort(function (a, b) { return S[b] - S[a]; });
+  var main = names[0];
+  var lab = {}; names.forEach(function (n) { lab[n] = n === main ? '해당' : (S[n] >= S[main] - 1 ? '살짝' : '약함'); });
+  return { main: main, score: S, lab: lab };
+}
+
+function rankJobs(A) {
+  var avg = A.avg;
+  var list = JOBS.map(function (J) {
+    var sc = 0, wsum = 0, usesYp = false, heavyAv = false;
+    Object.keys(J.use).forEach(function (k) {
+      var g = +k, w = J.use[k];
+      sc += w * Math.min(1, A.share[g] * 3) * A.fac[g]; wsum += w;
+      if (g === A.ypg) usesYp = true;
+      if (avg !== null && g === avg && w >= 2) heavyAv = true;
+    });
+    // 넘치는 힘을 주로 쓰더라도 부족한 힘이 같이 채워지면(예: 상관패인) 감점하지 않는다
+    sc = sc / wsum + (usesYp ? 0.15 : 0) - (heavyAv && !usesYp ? 0.12 : 0);
+    if (J.n === '창업·프리랜서' && A.types.main !== '창업형') sc -= 0.15;
+    return { J: J, sc: sc, usesYp: usesYp, heavyAv: heavyAv };
+  });
+  list.sort(function (a, b) { return b.sc - a.sc; });
+  return list;
+}
+
+/* ══════════ 화면 그리기 ══════════ */
+function buildHead(A) {
+  var R = A.R, N = A.N, top = A.topG, ypg = A.ypg;
+  var tags = TAG_STRONG[top].slice();
+  if (A.order[1] !== ypg && A.fac[A.order[1]] >= 0.7) tags.push(TAG_STRONG[A.order[1]][0]);
+  tags.push(TAG_WEAK[ypg]);
+  if (R.strength.category === '신약') tags.push('#받쳐줄때빛남'); else if (R.strength.category === '신강') tags.push('#내가정할때빛남');
+  var best = A.years.slice(0, 11).filter(function (y) { return y.v === 'hi'; }).sort(function (a, b) { return b.sc - a.sc; }).slice(0, 2).sort(function (a, b) { return a.year - b.year; });
+  var worst = A.years.slice(0, 11).filter(function (y) { return y.v === 'warn'; }).sort(function (a, b) { return a.sc - b.sc; }).slice(0, 2).sort(function (a, b) { return a.year - b.year; });
+  var m6 = A.months.slice(0, 6), bm = m6.slice().sort(function (a, b) { return b.sc - a.sc; })[0];
+  var hhmm = A.IN.hour === null ? '시각 모름' : (A.IN.hour < 10 ? '0' : '') + A.IN.hour + '시 ' + (A.IN.minute < 10 ? '0' : '') + A.IN.minute + '분';
+  var H = '';
+  H += '<header class="hero"><div class="eyebrow">CAREER SAJU</div><h1>' + esc(N) + '님의<br><b>커리어 사주 리포트</b></h1>' +
+    '<div class="meta">' + A.IN.year + '년 ' + A.IN.month + '월 ' + A.IN.day + '일 ' + hhmm + ' · ' + (A.IN.gender === 'M' ? '남성' : '여성') + (A.corrected ? ' · 32분 보정 적용' : '') + '</div></header>';
+  if (A.R.correction && A.R.input.hourKnown && !A.corrected && (A.R.correction.hourChanged || A.R.correction.dayChanged)) {
+    H += '<div class="notice">⏰ <b>태어난 시각이 경계에 걸려 있어요.</b> 한국 시간을 실제 해의 위치로 바꾸면(32분 앞당기면) 태어난 시의 두 글자가 바뀌어서, 풀이 일부가 달라질 수 있어요.<br><button type="button" id="fixBtn">32분 보정해서 다시 보기</button></div>';
+  }
+  if (A.corrected) H += '<div class="notice">⏰ 태어난 시각을 32분 앞당겨(실제 해의 위치 기준) 계산한 결과예요. <button type="button" id="unfixBtn">원래 시각으로 보기</button></div>';
+  H += '<div class="persona"><div class="k">' + esc(N) + '님은 이런 사람이에요</div>' +
+    '<div class="nm">' + PERSONA_STRONG[top] + ' ' + STEM_IMG[A.dm] + ' —<br>단, ' + NEED[ypg] + iga(NEED[ypg]) + ' 꼭 필요한 사람</div>' +
+    '<p>' + STEM_DESC[A.dm] + ' 사주의 다섯 가지 힘 중 가장 큰 건 <b>「' + GP[top] + '」</b>(' + GSHORT[top] + ')' + ro(GSHORT[top]) + ', 전체의 ' + pct(A.share[top]) + '%예요.</p>' +
+    '<p>반대로 부족해서 채워야 하는 건 <b>「' + GP[ypg] + '」</b>(' + GSHORT[ypg] + ')' + ieyo(GSHORT[ypg]) + '. ' + first(SHADOW[ypg]) + '. <b>' + NEED_LINE[ypg] + eul(NEED_LINE[ypg]) + ' 챙기는 것</b>, 이게 가장 먼저 챙겨야 할 부분이에요.</p>' +
+    '<div class="chips">' + tags.map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</div></div>';
+  H += '<div class="keys">' +
+    key('가장 큰 무기', WEAPON[top], GP[top] + ' ' + pct(A.share[top]) + '%', 'b') +
+    key('가장 잘 맞는 일', A.jobs[0].J.n, A.jobs[0].J.core, 'b') +
+    key('커리어 유형', A.types.main, TYPE_INFO[A.types.main].d, 'b') +
+    key('가장 좋은 해', best.length ? best.map(function (y) { return y.year; }).join(' · ') + '년' : '뚜렷한 해 없음', best.length ? '옮기거나 올라가기 좋은 창' : '해마다 고르게 흘러가요', 'b') +
+    key('조심할 해', worst.length ? worst.map(function (y) { return y.year; }).join(' · ') + '년' : '크게 없음', worst.length ? '큰 결정은 미루는 게 좋아요' : '10년 안에 크게 막히는 해가 없어요', worst.length ? 'r' : 'b') +
+    key('가까운 기회의 달', bm.y + '년 ' + bm.m + '월', bm.v === 'hi' ? '면접·연봉 협상에 좋아요' : '6개월 중 흐름이 가장 나은 달', 'b') + '</div>';
+  H += '<p class="legend">각 판단 옆 라벨 — ' + lvl('계산') + '만세력으로 계산한 값 · ' + lvl('사주 구조') + '사주에서 바로 읽히는 것 · ' + lvl('옛 해석') + '예전부터 내려오는 해석 · ' + lvl('참고') + '해석이 갈리는 것 · ' + lvl('우리 기준') + '사주를 직업에 연결하려고 정한 기준</p>';
+  return H;
+}
+function key(l, v, d, c) { return '<div class="key"><div class="l">' + l + '</div><div class="v ' + c + '">' + v + '</div><div class="d">' + d + '</div></div>'; }
+
+function buildCh1(A) {
+  var N = A.N, top = A.topG, ypg = A.ypg, mg = A.monthG, H = '';
+  var top1 = A.jobs[0].J;
+  H += chHead('CHAPTER 1.', '타고난 재능과', '나에게 맞는 일', '사주에 숨어 있는 <em>재능을 실제 직무와 연결</em>해 풀어드려요.', '🧠');
+  var strongs = strengthsOf(A), weaks = weaknessesOf(A);
+  H += toc([['s11', '🔎', '내 사주의 <em>타고난 재능</em>', WEAPON[top]],
+    ['s13', '🎯', '나에게 맞는 직무 <em>TOP3</em>', '1위 ' + top1.n],
+    ['s14', '🧩', '일할 때 <em>강점과 약점</em>', strongs[0].t + ' / ' + weaks[0].t],
+    ['s15', '🚫', '오래 못 버티는 <em>환경</em>', envList(A).map(function (e) { return e[0]; })[0]]]);
+
+  // 1-1
+  var G = GENIUS[top], circs = circuits(A), b = '';
+  b += '<p style="font-size:16.5px"><b>「' + G.head + '」</b>' + iga(G.head) + ' ' + esc(N) + '님의 무기예요.</p>';
+  b += '<div class="step">왜 그렇게 보냐면요</div>';
+  b += '<p>사주에는 다섯 가지 기운이 있어요. ' + esc(N) + '님에게 가장 큰 기운은 <b>「' + GP[top] + '」</b>(' + GSHORT[top] + ')' + ieyo(GSHORT[top]) + '. 전체 기운의 ' + pct(A.share[top]) + '%를 차지해요.</p>';
+  b += '<p>' + (mg === top ? '게다가 사주에서 「직업 자리」로 보는 칸에도 이 힘이 앉아 있어서, 일할 때 특히 강하게 드러나요.' : '사주에서 「직업 자리」로 보는 칸에는 ' + qg(mg) + iga(GP[mg]) + ' 앉아 있어요. 그래서 이 재능은 <b>' + JOB_CORE[mg] + ' 일</b>에서 가장 잘 쓰여요.') + '</p>';
+  if (circs.open.length) {
+    var c0 = circs.open[0];
+    b += '<p>' + esc(N) + '님 사주에는 <b>「' + CIRC[c0][2] + ' 통로」</b>가 튼튼하게 이어져 있어요.' + (CIRC_NICK[c0] ? ' 쉽게 말해 <b>「' + CIRC_NICK[c0] + '」</b>예요.' : '') +
+      (circs.open.length > 1 ? ' 「' + CIRC[circs.open[1]][2] + ' 통로」도 함께 살아 있어요.' : '') + '</p>';
+  }
+  b += '<div class="step">실제로는 이런 모습으로 나타나요</div><div class="scene">' + G.scene.map(function (s) { return '• ' + s; }).join('<br>') + '</div>';
+  b += '<div class="step">그런데 이 재능에는 그림자가 있어요</div><p>' + SHADOW[ypg] + '</p>';
+  if (circs.blocked.length) b += '<p>사주의 흐름으로 보면 <b>「' + CIRC[circs.blocked[0]][2] + ' 통로」</b>가 막혀 있어요. ' + CIRC[circs.blocked[0]][3] + '.</p>';
+  b += '<p>그래서 ' + esc(N) + '님에게 필요한 건 <b>' + NEED_LINE[ypg] + '</b>이에요.</p>';
+  b += '<div class="tip"><b>이렇게 해 보세요</b>' + TIP[ypg] + '</div>';
+  b += '<div class="check"><span class="y">이런 적 있다면</span> ' + CHECK_YES[top] + ' 이 해석이 맞아요.<br><span class="n">이런 적 없다면</span> ' + CHECK_NO[top] + ' 이 해석은 다시 볼 필요가 있어요.</div>';
+  H += item('s11', '🔎', '1-1', '타고난 재능', '사주 구조', b);
+
+  // 1-2
+  var rank = A.order, lowG = ypg;
+  var secG = rank.filter(function (g) { return g !== rank[0] && g !== ypg && A.fac[g] >= 0.7; })[0];
+  if (secG === undefined) secG = rank.filter(function (g) { return g !== rank[0] && g !== ypg; })[0];
+  b = '<div class="tiles">' + [[rank[0], '최상위', 'hi'], [secG, '높음', 'hi'], [lowG, '낮음', 'lo']].map(function (x) {
+    return '<div class="tile"><div class="e">' + TILE[x[0]][0] + '</div><div class="k">' + TILE[x[0]][1] + '</div><div class="s">' + TILE[x[0]][2] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
+  }).join('') + '</div>';
+  b += '<p>사주의 다섯 가지 기운을 실제 크기대로 그려 보면 이렇게 돼요. 막대가 길수록 그 힘이 강하다는 뜻이에요.</p><div class="bars">';
+  var mx = A.share[rank[0]] || 1;
+  rank.forEach(function (g) {
+    var st = BAR_ST[A.status[g]], extra = '';
+    if (g === ypg) extra = ' 그래서 이게 <b>「부족해서 채워야 할 기운」</b>이에요.';
+    else if (g === A.avg) extra = ' 이미 넘치는 기운이라 운에서 더 들어오면 부담이 돼요.';
+    b += '<div class="row"><span>' + GP[g] + '</span><div class="track"><div class="fill" style="width:' + Math.max(4, Math.round(A.share[g] / mx * 100)) + '%;background:var(--' + EL_CLS[A.elOfG(g)] + ')"></div></div><span>' + pct(A.share[g]) + '% <span class="tag ' + st[0] + '">' + st[1] + '</span></span></div>' +
+      '<div class="why">' + GMEAN[g] + '. ' + st[2] + extra + '</div>';
+  });
+  b += '</div><div class="step">한 줄로 정리하면</div><p><b>' + qg(rank[0]) + iga(GP[rank[0]]) + ' 가장 크고 ' + qg(ypg) + iga(GP[ypg]) + ' 부족한 사람</b>이에요. ' + GENIUS[rank[0]].scene[0] + ' 대신 ' + first(SHADOW[ypg]) + '.</p>';
+  b += '<p class="small">사주 서비스에서 보이는 「창의력 95점」 같은 점수는 일부러 넣지 않았어요. 점수 계산법은 만드는 쪽이 정하는 거라 맞는지 확인할 방법이 없거든요. 대신 실제 기운의 크기를 그대로 보여드려요.</p>';
+  H += item('s12', '📊', '1-2', '나를 이루는 다섯 가지 힘', '계산', b);
+
+  // 1-3
+  b = '<p>기준은 두 가지예요. <b>① ' + esc(N) + '님에게 강한 힘을 그대로 쓰는 일인가</b>, <b>② 부족한 ' + qg(ypg) + iga(GP[ypg]) + ' 일하면서 자연스럽게 채워지는가.</b> 반대로 이미 넘치는 힘을 더 짜내야 하는 일은 아래로 내렸어요.</p>';
+  var medals = ['🥇', '🥈', '🥉'], fitTxt = [['ok', '아주 잘 맞음'], ['mid', '잘 맞음'], ['mid', '보조로 좋음']], widths = [92, 72, 52];
+  A.jobs.slice(0, 3).forEach(function (x, i) {
+    var J = x.J, gs = Object.keys(J.use).map(Number).sort(function (a, b) { return J.use[b] - J.use[a]; });
+    var parts = gs.map(function (g, gi) {
+      var last = gi === gs.length - 1, s = A.status[g];
+      var tail = s === '튼튼' ? (last ? '튼튼해요' : '튼튼하고') : s === '마찰' ? (last ? '살아 있지만 가끔 흔들려요' : '살아 있지만 가끔 흔들리고') : (last ? '약해요' : '약하고');
+      return qg(g) + iga(GP[g]) + ' ' + tail;
+    });
+    var whyTxt = '이 일은 ' + gs.map(function (g) { return qg(g); }).join('·') + eul(GP[gs[gs.length - 1]]) + ' 주로 써요. ' + esc(N) + '님은 ' + parts.join(', ') + '.' +
+      (x.usesYp ? ' 게다가 부족한 ' + qg(ypg) + iga(GP[ypg]) + ' 일하면서 채워져요.' : '');
+    b += '<div class="it"><div class="h"><span>' + medals[i] + ' ' + J.n + '</span><span class="tag ' + fitTxt[i][0] + '">' + fitTxt[i][1] + '</span></div>' +
+      '<div class="track"><div class="fill" style="width:' + widths[i] + '%"></div></div><div class="ex">예: ' + J.ex + '</div>' +
+      '<p><b>왜 맞냐면</b> — ' + J.core + ' ' + whyTxt + '</p><p><b>주의할 점</b> — ' + J.caution + '</p></div>';
+  });
+  var worstJ = A.jobs[A.jobs.length - 1];
+  b += '<div class="warnbox"><b>덜 맞는 일</b>' + worstJ.J.n + ' (' + worstJ.J.ex + '). ' + worstJ.J.core.replace('일이에요.', '일인데,') + ' ' + esc(N) + '님은 이 일에 필요한 힘이 상대적으로 약해서, 같은 노력을 들여도 다른 일보다 지치는 속도가 빨라요.</div>';
+  b += '<p class="small">' + lvl('우리 기준') + '사주를 직업에 연결하는 기준은 옛 책에 없어서 이 서비스가 정한 기준이에요.</p>';
+  H += item('s13', '🎯', '1-3', '나에게 맞는 직무 TOP 3', '우리 기준', b, false).replace('class="item"', 'class="item top3"');
+
+  // 1-4
+  b = '<p>사주의 다섯 가지 힘 중 튼튼한 쪽과 약한 쪽을 일하는 장면으로 옮겨 봤어요.</p><div class="scroll"><table><tr><th style="width:50%">💪 강점</th><th>⚠️ 약점</th></tr>';
+  for (var i = 0; i < 3; i++) b += '<tr><td>' + (strongs[i] ? strongs[i].h : '') + '</td><td>' + (weaks[i] ? weaks[i].h : '') + '</td></tr>';
+  b += '</table></div><div class="tip"><b>강점을 살리는 법</b>팀 안에서 「' + ROLE[strongs[0].g] + '」처럼 내 강점이 이름 붙은 역할을 맡으세요. 그리고 ' + weaks[0].t + ' 쪽은 혼자 버티지 말고, 일을 시작할 때 도움받을 지점을 먼저 정해 두세요.</div>';
+  H += item('s14', '🧩', '1-4', '일할 때 강점과 약점', '사주 구조', b);
+
+  // 1-5
+  var env = envList(A);
+  b = '<p>' + esc(N) + '님에게 ' + (A.avg !== null ? '넘치는 기운은 <b>「' + GP[A.avg] + '」</b>, ' : '') + '모자란 기운은 <b>「' + GP[ypg] + '」</b>이에요. ' +
+    (A.avg !== null ? '그러니까 <b>넘치는 쪽은 계속 쓰게 하고, 모자란 쪽은 채울 틈이 없는 곳</b>이 가장 위험해요.' : '모자란 쪽을 채울 틈이 없는 곳이 가장 위험해요.') + ' 구체적으로는 이 세 가지예요.</p><ol class="plain">';
+  env.forEach(function (e) { b += '<li><b>' + e[0] + '</b><br>' + e[1] + '<span class="sig">🚨 위험 신호 — ' + e[2] + '</span></li>'; });
+  b += '</ol><div class="tip"><b>이렇게 해 보세요</b>위험 신호가 하나라도 보이면 상사에게 「제 담당 범위를 한 번 정리하고 싶다」고 먼저 말해 보세요. 문제는 대부분 「내 일이 어디까지인가」가 흐려질 때 커져요.</div>';
+  H += item('s15', '🚫', '1-5', '내가 오래 못 버티는 환경', '사주 구조', b);
+
+  // 1-6
+  var cnt = { ok: 0, mid: 0, bad: 0 }, rows = '';
+  FIT_WORK.forEach(function (w) {
+    var f = w[1].reduce(function (a, g) { return a + A.fac[g] * Math.min(1, A.share[g] * 3.5); }, 0) / w[1].length;
+    if (A.avg !== null && w[1][0] === A.avg) f -= 0.15;
+    if (w[1].indexOf(ypg) >= 0) f += 0.1;
+    var k = f >= 0.6 ? 'ok' : f >= 0.35 ? 'mid' : 'bad'; cnt[k]++;
+    var why = w[1].map(function (g) { return '「' + GP[g] + '」 ' + (A.status[g] === '튼튼' ? '튼튼' : A.status[g] === '마찰' ? '살짝 흔들림' : '약함'); }).join(' · ') +
+      (A.avg !== null && w[1][0] === A.avg ? ' · 이미 넘치는 힘을 더 써요' : '') +
+      (w[1].indexOf(ypg) >= 0 ? (k === 'bad' ? ' · 부족한 힘을 쓰는 일이라 지금은 버거워요' : ' · 부족한 힘이 채워져요') : '');
+    rows += '<tr><td>' + w[0] + '</td><td><span class="tag ' + k + '">' + { ok: '맞음', mid: '보통', bad: '안 맞음' }[k] + '</span></td><td>' + why + '</td></tr>';
+  });
+  b = '<div class="fit"><div class="lab">지금 하는 일과<b>얼마나 맞을까?</b>' + lvl('우리 기준') + '</div><div class="big">' +
+    '<div><span><strong style="color:var(--good)">' + cnt.ok + '</strong><small>맞음</small></span></div><div><span><strong style="color:var(--warn)">' + cnt.mid + '</strong><small>보통</small></span></div><div><span><strong style="color:var(--risk)">' + cnt.bad + '</strong><small>안 맞음</small></span></div></div></div>' +
+    '<p class="small">회사에서 하는 일을 다섯 가지로 나눠 봤어요. 지금 내 일이 어느 줄에 많이 해당하는지 보면 궁합이 보여요.</p>' +
+    '<div class="scroll"><table><tr><th>이런 일을 하고 있다면</th><th>궁합</th><th>왜냐면</th></tr>' + rows + '</table></div>';
+  var gwanin = A.fac[3] >= 0.7 && A.fac[4] >= 0.7, gwanin2 = A.fac[3] > 0 && A.fac[4] > 0;
+  b += '<div class="fit-label">사주 서비스의 「관인상생」 해석, 나에게 맞을까?</div><p>사주 서비스에서 자주 보이는 「관인상생(조직이 나를 키워 주는 구조)」이라는 해석은, ' +
+    (gwanin ? '<b>' + esc(N) + '님에게 그대로 맞아요.</b> 「붙잡는 틀 → 받아들이는 힘 → 나」로 이어지는 통로가 끊긴 데 없이 이어져 있거든요. 조건은 하나예요. 들어오는 압박이 배움으로 바꿀 수 있는 양을 넘지 않아야 해요.'
+      : gwanin2 ? '<b>' + esc(N) + '님에게는 절반만 맞아요.</b> 글자는 이어져 있지만 한쪽이 약해서 통로가 가늘어요. 조직에서 배운 것이 가늘게라도 내 실력으로 들어오는 정도로 보면 맞아요.'
+      : '<b>' + esc(N) + '님에게는 잘 맞지 않아요.</b> 「붙잡는 틀」과 「받아들이는 힘」 중 하나가 사주에 거의 없어서, 조직이 나를 키워 주는 회로보다 내가 직접 만들어 인정받는 회로가 더 강해요.') + '</p>';
+  H += item('s16', '💞', '1-6', '지금 하는 일과의 궁합', '', b, true);
+  H += nextBtn('t2', 'CHAPTER 2 이어보기', '나에게 맞는 커리어는 어떤 구조일까');
+  return H;
+}
+
+function circuits(A) {
+  var open = [], blocked = [];
+  CIRC.forEach(function (c, i) {
+    var a = A.fac[c[0]], b = A.fac[c[1]];
+    if (a >= 0.7 && b >= 0.7) open.push(i);
+    else if ((a >= 0.7 && b <= 0.35) || (b >= 0.7 && a <= 0.35)) blocked.push(i);
+  });
+  open.sort(function (x, y) { return (A.share[CIRC[y][0]] + A.share[CIRC[y][1]]) - (A.share[CIRC[x][0]] + A.share[CIRC[x][1]]); });
+  return { open: open, blocked: blocked };
+}
+function strengthsOf(A) {
+  var out = A.order.filter(function (g) { return A.fac[g] >= 0.7; });
+  A.order.forEach(function (g) { if (out.length < 3 && out.indexOf(g) < 0 && A.fac[g] > 0.3 && g !== A.ypg) out.push(g); });
+  return out.slice(0, 3).map(function (g) { return { g: g, h: STR_TXT[g], t: STR_TXT[g].match(/<b>(.*?)<\/b>/)[1] }; });
+}
+function weaknessesOf(A) {
+  var out = [{ g: A.ypg, h: WEAK_TXT[A.ypg] }];
+  A.order.slice().reverse().forEach(function (g) { if (out.length < 3 && g !== A.ypg && A.fac[g] <= 0.35) out.push({ g: g, h: WEAK_TXT[g] }); });
+  if (A.avg !== null && out.length < 3) out.push({ g: A.avg, h: OVER_TXT[A.avg] });
+  A.order.forEach(function (g) { if (out.length < 3 && A.status[g] === '마찰' && !out.some(function (o) { return o.g === g; })) out.push({ g: g, h: '<b>' + GP[g] + '의 흔들림</b><br>' + GSHORT[g] + ' 쪽 힘이 다른 글자와 부딪혀 있어서, 잘 되다가도 한 번씩 흔들려요.' }); });
+  return out.slice(0, 3).map(function (o) { o.t = o.h.match(/<b>(.*?)<\/b>/)[1]; return o; });
+}
+function envList(A) {
+  var L = [];
+  if (A.avg !== null) L.push(ENV_OVER[A.avg]);
+  L.push(ENV_LACK[A.ypg]);
+  if (A.gwanMix) L.push(['지시하는 사람이 둘인 곳', '사주에 「기준을 주는 기운」이 두 종류 같이 있어요. 팀장과 실장의 말이 다르거나 두 부서 일을 겸하면, 양쪽을 다 맞추려다 지쳐요.', '같은 보고서를 두 사람 기준에 맞춰 두 번 고치는 일이 한 달에 두 번 이상 생길 때']);
+  else if (A.R.strength.category === '신강') L.push(['하나하나 지시받는 곳', '스스로 정할 때 힘이 나는 사주라, 세세하게 통제받으면 답답함이 먼저 와요.', '내 판단으로 바꿀 수 있는 게 하나도 없다고 느낄 때']);
+  else if (A.R.strength.category === '신약') L.push(['큰 일을 혼자 끌고 가야 하는 곳', '받쳐 주는 환경이 있을 때 성과가 나는 사주라, 지원 없이 큰 일을 떠안으면 먼저 지쳐요.', '도움을 청할 사람이 떠오르지 않을 때']);
+  else L.push(['역할이 매번 바뀌는 곳', '받쳐 주는 환경과 스스로 정하는 일이 섞일 때 오래 가는 사주라, 역할이 자주 바뀌면 리듬이 깨져요.', '석 달 안에 담당이 두 번 이상 바뀔 때']);
+  var seen = {}; return L.filter(function (e) { if (seen[e[0]]) return false; seen[e[0]] = 1; return true; }).slice(0, 3);
+}
+
+function buildCh2(A) {
+  var N = A.N, H = '', f = A.fac, tc = A.tc;
+  var orgType = f[3] < 0.35 ? 'free' : (tc['정관'] > 0 ? 'ladder' : 'big');
+  var O = ORG[orgType], T = A.types;
+  H += chHead('CHAPTER 2.', '나에게 맞는 커리어는', '어떤 구조일까?', '어떤 조직에서, 어떤 방식으로 <em>올라가고 돈을 버는지</em> 풀어드려요.', TYPE_INFO[T.main].icon);
+  var money = moneyInfo(A);
+  H += toc([['s21', '👥', '인정받는 <em>조직 문화</em>', O.good[0].replace(/<\/?b>/g, '')],
+    ['s22', '📈', '승진형 vs 점프형 vs 창업형', esc(N) + '님은 ' + T.main],
+    ['s23', '💰', '나에게 <em>돈이 붙는</em> 방식', money.short]]);
+  var b = '<p>' + O.p + '</p><div class="scroll"><table><tr><th>😊 잘 맞는 조직</th><th>😣 안 맞는 조직</th></tr>' +
+    O.good.map(function (g, i) { return '<tr><td>' + g + '</td><td>' + O.bad[i] + '</td></tr>'; }).join('') + '</table></div>';
+  var Q3 = A.gwanMix ? ['제 보고 라인은 한 분인가요?', '지시하는 사람이 둘인 구조는 빨리 지치는 환경이에요.'] :
+    A.R.strength.category === '신약' ? ['사수나 같이 검토해 줄 분이 있나요?', '받쳐 주는 사람이 있는지 확인해요.'] :
+    A.R.strength.category === '신강' ? ['제가 결정할 수 있는 권한은 어디까지인가요?', '내가 정할 수 있는 범위가 넓을수록 성과가 나요.'] :
+    ['하루 업무 중 회의·응대 비중은 어느 정도인가요?', '내 일에 집중할 시간이 있는지 확인해요.'];
+  var qs = [O.q, Q_NEED[A.ypg], Q3], seen = {};
+  qs = qs.filter(function (q) { if (seen[q[0]]) return false; seen[q[0]] = 1; return true; });
+  b += '<div class="step">면접 때 이렇게 물어보세요</div><ul class="qa">' + qs.map(function (q, i) { return '<li><b>Q' + (i + 1) + '.</b> 「' + q[0] + '」 — ' + q[1] + '</li>'; }).join('') + '</ul>';
+  b += '<div class="check"><span class="y">이런 적 있다면</span> ' + O.good[0].replace(/<\/?b>/g, '') + '에서 일이 가장 잘 풀렸다면 이 해석이 맞아요.<br><span class="n">이런 적 없다면</span> ' + O.bad[0] + '에서 오히려 더 편했다면 이 해석은 다시 볼 필요가 있어요.</div>';
+  H += item('s21', '👥', '2-1', '인정받는 조직 문화', '사주 구조', b);
+
+  b = '<div class="types">' + ['승진형', '점프형', '창업형'].map(function (n) {
+    var l = T.lab[n]; return '<div class="type' + (n === T.main ? ' on' : '') + '"><div>' + TYPE_INFO[n].icon + '</div><div class="nm">' + n + '</div><span class="tag ' + (l === '해당' ? 'ok' : l === '살짝' ? 'mid' : 'bad') + '">' + (l === '해당' ? esc(N) + '님' : l) + '</span></div>';
+  }).join('') + '</div><p class="small">승진형 = 한 조직 안에서 단계를 밟아 올라가는 형 · 점프형 = 전문성을 들고 회사를 옮기며 몸값을 올리는 형 · 창업형 = 내가 만든 걸 직접 팔아 돈을 버는 형</p>';
+  b += '<div class="step">' + esc(N) + '님은 ' + T.main + '이에요</div><p>' + TYPE_INFO[T.main].why + '</p>';
+  var gmGw = A.R.cells.some(function (c) { return c.gongmang && GI[c.branchTenGod] === 3; });
+  var extra = [];
+  if (gmGw) extra.push('사주에서 「직함」을 뜻하는 글자가 <b>비어 있는 칸</b>에 앉아 있어요. 그래서 실력보다 인정이 <b>한 박자 늦게</b> 와요. 같은 성과를 내도 동기보다 승진이 조금 늦을 수 있어요.');
+  if (A.natalYm && T.main !== '점프형') extra.push('사주에 「이동」의 기운도 있어요. 그래서 제자리에서 막혔을 때 <b>부서 이동이나 회사를 옮기면서 인정이 한꺼번에 붙는 경우</b>가 있어요.');
+  ['승진형', '점프형', '창업형'].forEach(function (n) { if (n !== T.main && T.lab[n] === '살짝') extra.push(n + ' 기운도 <b>살짝</b> 있어요. ' + TYPE_INFO[n].d + '이 필요할 때 그 길도 열려 있어요.'); });
+  if (extra.length) b += '<div class="step">특이한 점</div>' + extra.map(function (e) { return '<p>' + e + '</p>'; }).join('');
+  b += '<div class="tip"><b>이렇게 해 보세요</b>' + TYPE_INFO[T.main].tip + '</div>';
+  if (T.lab['창업형'] === '약함') b += '<p><b>창업형은 왜 약할까요?</b> 창업은 「내가 만든 걸 밖으로 내보내서(내보내는 힘) → 돈으로 바꾸는(쓰는 힘)」 구조예요. ' + esc(N) + '님은 이 두 힘이 ' + [1, 2].map(function (g) { return '「' + GP[g] + '」 ' + A.status[g]; }).join(', ') + ' 상태라, 같은 노력이면 다른 방식이 더 많이 남아요.</p>';
+  H += item('s22', '📈', '2-2', '승진형 vs 점프형 vs 창업형', '우리 기준', b);
+
+  b = '<p>' + money.p1 + '</p><p>' + money.p2 + '</p><div class="tip"><b>이렇게 해 보세요</b>' + money.tip + '</div>';
+  H += item('s23', '💰', '2-3', '나에게 돈이 붙는 방식', '사주 구조', b);
+  H += nextBtn('t3', 'CHAPTER 3 이어보기', '나는 왜 떠나고 싶을까');
+  return H;
+}
+
+function moneyInfo(A) {
+  var f = A.fac, biz = f[1] >= 0.7 && f[2] >= 0.7 && A.R.strength.category !== '신약';
+  var o = { biz: biz };
+  if (biz) {
+    o.short = '내가 만든 걸 직접 파는 구조';
+    o.p1 = '사주에서 「내보내는 힘」과 「쓰는 힘」이 둘 다 튼튼해서, <b>만든 것이 그대로 돈으로 이어지는 통로</b>가 열려 있어요. 성과급·인센티브·부업처럼 한 만큼 받는 구조에서 돈이 잘 붙어요.';
+    o.p2 = '다만 버는 만큼 벌이는 일도 많아져요. 들어오는 돈을 먼저 떼어 두는 장치가 있어야 손에 남아요.';
+    o.tip = '수입이 들어오는 날 자동이체로 20%를 먼저 떼어 두세요. 「벌고 → 쓰고 → 남는 걸 모으기」 순서를 「벌고 → 떼어 두고 → 쓰기」로 바꾸는 거예요.';
+  } else if (f[3] >= 0.7) {
+    o.short = '직급과 연봉이 같이 오르는 구조';
+    o.p1 = '사주에서 「돈」을 뜻하는 기운이 ' + (f[2] >= 0.7 ? '있지만 혼자 돈을 만드는 통로는 약해요' : '약하거나 흔들려요') + '. 그래서 내가 직접 거래해서 돈을 버는 방식은 노력에 비해 손에 남는 게 적어요.';
+    o.p2 = '대신 <b>「직급 → 연봉」으로 이어지는 길</b>은 튼튼해요. 회사가 주는 직함이 실력으로 바뀌고, 그게 다시 연봉으로 돌아오는 구조예요. 가장 확실한 재테크는 <b>자격증·평가 등급을 올려서 직급과 호봉을 올리는 것</b>이에요.';
+    o.tip = '매년 평가 시즌 한 달 전에 「올해 내가 해낸 일 3개」를 한 줄씩 적어 상사에게 먼저 보내세요. 잘 끝난 일일수록 티가 안 나서, 기록으로 남겨야 연봉에 반영돼요.';
+  } else {
+    o.short = '전문성 단가를 올리는 구조';
+    o.p1 = '사주에서 「돈」을 뜻하는 기운과 「직함」을 뜻하는 기운이 둘 다 강하지 않아요. 그래서 한 번에 큰돈이 들어오는 구조보다 <b>내 전문성의 몸값을 해마다 올리는 구조</b>에서 돈이 붙어요.';
+    o.p2 = '같은 일을 해도 「이 일은 저 사람이 잘해」라는 평판이 쌓일수록 단가가 올라가요. 회사를 옮길 때마다 그 평판이 연봉으로 바뀌어요.';
+    o.tip = '프로젝트가 끝나면 48시간 안에 「규모·기간·결과」 숫자 세 개를 적어 두세요. 이직·연봉 협상 때 그대로 근거가 돼요.';
+  }
+  return o;
+}
+
+function buildCh3(A) {
+  var N = A.N, H = '';
+  H += chHead('CHAPTER 3.', '나는 왜', '떠나고 싶을까?', '때마다 바뀌는 <em>이동의 흐름</em>을 보고, 떠나고 싶은 마음의 정체를 풀어드려요.', '🧭');
+  // 캘린더
+  var cal = [];
+  for (var k = 0; k < 4; k++) {
+    var dt = new Date(A.nowY, A.nowM - 1 + k, 1), y = dt.getFullYear(), m = dt.getMonth() + 1, days = new Date(y, m, 0).getDate(), good = [], move = [];
+    for (var d = 1; d <= days; d++) {
+      var dp = SE.computeSaju(y, m, d, 12, 0).day, j = judge(A, dp.s, dp.b);
+      if (j.sc >= 4) good.push(d); else if (j.ym && j.sc >= 2) move.push(d);
+    }
+    var mj = A.months[k];
+    cal.push({ y: y, m: m, good: good, move: move, v: mj ? mj.v : 'mid' });
+  }
+  A.cal = cal;
+  var b = '<div class="calbox"><div class="top"><span>' + esc(N) + '님의 이직운 캘린더 <span id="calIdx">1/4</span></span><div class="calnav"><button type="button" id="calPrev" aria-label="이전 달">‹</button><button type="button" id="calNext" aria-label="다음 달">›</button></div></div>' +
+    '<div class="calbody" id="calBody" aria-live="polite"></div><div class="calleg"><i style="background:var(--pink)"></i>이직운이 좋은 날<i style="box-shadow:inset 0 0 0 1.5px var(--pink)"></i>이동수가 들어오는 날</div></div>';
+  b += '<div class="step">이 달력은 이렇게 쓰세요</div><p><b>분홍 날</b>은 부족한 기운이 들어오고 흐름이 받쳐 주는 날이에요. 면접·연봉 협상·중요한 발표처럼 <b>내가 직접 나서는 일</b>을 이 날에 잡으면 좋아요. <b>테두리만 있는 날</b>은 「움직이고 싶은 마음」이 올라오는 날이에요. 이력서 정리나 채용 공고 보기에 좋아요.</p>';
+  var thisY = A.yearOf(A.nowY), nextY = A.yearOf(A.nowY + 1);
+  var febIn = cal.some(function (c) { return c.m === 2; });
+  b += '<div class="notice">올해(' + A.nowY + '년)의 흐름은 <b>' + vword(thisY.v) + '</b>예요.' +
+    (febIn ? ' 2월 4일 입춘부터는 ' + (A.nowY + (A.nowM <= 2 ? 0 : 1)) + '년의 흐름(' + vword((A.nowM <= 2 ? thisY : nextY).v) + ')으로 바뀌어요.' : '') +
+    ((thisY.v === 'warn' || (febIn && nextY.v === 'warn')) ? ' 무거운 해에는 좋은 날을 면접처럼 직접 하는 일에만 쓰고, 「입사 확정」「퇴사 통보」처럼 되돌리기 어려운 결정은 연봉·직무·입사일이 확실할 때만 내리세요.' : ' 좋은 날에는 직접 나서는 일을 잡고, 큰 결정은 조건을 먼저 확인한 뒤 내리세요.') + '</div>';
+  b += '<p class="small">' + lvl('참고') + '날짜 하나하나의 운은 사주 해석 중 근거가 가장 약한 부분이에요. 날짜를 고를 수 있을 때 참고하는 정도로만 쓰세요.</p>';
+  // 월 14
+  var bestM = A.months.slice().sort(function (a, c) { return c.sc - a.sc; })[0], worstM = A.months.slice().sort(function (a, c) { return a.sc - c.sc; })[0];
+  b += '<h4>앞으로 14개월, 달마다 이렇게 보내세요</h4><div class="scroll"><table><tr><th>달</th><th>흐름</th><th>이렇게 보내세요</th></tr>';
+  A.months.forEach(function (m) {
+    var t;
+    if (m === bestM && m.v === 'hi') t = '<b>14개월 중 가장 좋은 달.</b> 면접·협상·결정 모두 이 달에';
+    else if (m === worstM && m.v === 'warn') t = '<b>14개월 중 가장 힘든 달.</b> 퇴사·이직·큰 결정은 이 달에 하지 않기. 휴가는 이 달에';
+    else if (m.v === 'hi') t = '기회의 달. 면접·연봉 협상·이동 결정에 좋아요';
+    else if (m.v === 'warn') t = '조심할 달. 큰 결정은 피하고 쉬는 일정을 먼저';
+    else t = EVENT[m.g] + '. ' + GROUP_DO[m.g];
+    if (m.ym && m.v !== 'warn') t += ' · 움직이고 싶은 마음이 올라와요';
+    b += '<tr><td style="white-space:nowrap;font-weight:700">' + m.y + '.' + m.m + '</td><td>' + tagV(m.v, { hi: '좋음', mid: '보통', warn: '조심' }[m.v]) + '</td><td>' + t + '</td></tr>';
+  });
+  b += '</table></div><p class="small">사주에서 달은 절기(매달 4~8일경)에 바뀌어요. 표의 「' + A.months[1].m + '월」은 ' + A.months[1].m + '월 초 절기부터 다음 달 초 절기 전까지예요.</p>';
+  H += '<div class="item" id="s31">' + b + '</div>';
+
+  // 3-2 이동수
+  var ymYears = A.years.filter(function (y) { return y.ym && y.year > A.nowY; }).slice(0, 4);
+  var goodYm = ymYears.filter(function (y) { return y.v === 'hi'; })[0], anyYm = ymYears[0];
+  var POS = { '연': '사회에 나설 때부터 이동 기운이 깔려 있어요. 일찍부터 여러 곳을 경험하는', '월': '일하는 자리 자체에 이동 기운이 있어요. 일 때문에 자주 움직이는', '일': '일상 가까이에 이동 기운이 있어요. 생활 반경이 넓고 변화를 즐기는', '시': '「결과물이 쌓이는 자리」에 이동 기운이 있어요. 한 곳에서 결과를 만든 다음 자리를 옮기며 인정받는' };
+  var moveY = goodYm || A.years.filter(function (y) { return y.v === 'hi' && y.year > A.nowY; })[0];
+  b = '<ul class="checks"><li>타고난 이동수 — <b>' + (A.natalYm ? '있어요' : '없어요, 운에서 올 때 움직이는 쪽') + '</b></li><li>실제로 옮기기 좋은 해 — <b>' + (moveY ? moveY.year + '년' : '뚜렷한 해 없음') + '</b></li></ul>';
+  b += '<p>' + (A.natalYm ? esc(N) + '님 사주에는 <b>이동의 기운(역마)</b>이 있어요. ' + POS[A.natalYm.at] + ' 사람이에요.' : esc(N) + '님 사주 안에는 이동의 기운(역마)이 없어요. 타고나기를 떠도는 사람은 아니고, <b>운에서 이동 기운이 들어올 때 움직이고 싶어지는</b> 사람이에요.') + '</p>';
+  if (ymYears.length) {
+    b += '<ul class="plain">' + ymYears.map(function (y) {
+      return '<li><b>' + y.year + '년 (만 ' + y.age + '세)</b> — ' + (y.v === 'hi' ? '이동 기운과 좋은 흐름이 같이 와요. <b>옮기고 싶은 마음과 옮길 조건이 같이 오는 해</b>예요.' : y.v === 'warn' ? '이동 기운이 오지만 흐름이 무거워요. 이 해의 이동은 지쳐서 떠나는 이동일 때가 많아요.' : '이동 기운이 들어와요. 움직이고 싶은 마음이 커지니, 조건을 꼼꼼히 비교해 보고 움직이세요.') + '</li>';
+    }).join('') + '</ul>';
+  }
+  H += item('s32', '🗓️', '3-2', '사주에 이동수가 있을까?', '사주 구조', b, true);
+
+  // 3-3 대운
+  if (A.curD) {
+    var D = A.curD, de = D.year + 9, T = A.types.main;
+    b = '<ul class="checks"><li>지금은 옮겨야 성장하는 시기인가? — <b>' + (T === '점프형' && D.v !== 'warn' ? '예, 옮길수록 커지는 시기' : D.v === 'hi' ? '아니요, 자리에서 올라가는 시기' : D.v === 'warn' ? '아니요, 지금은 다지는 시기' : '그해 운을 보고 정하면 돼요') + '</b></li>' +
+      '<li>한 조직에 오래 있으면 정체될까? — <b>' + (T === '점프형' ? '2~4년이 적당해요' : '정체보다 「지침」이 더 위험해요') + '</b></li>' +
+      '<li>움직여야 돈이 붙을까? — <b>' + (moneyInfo(A).biz ? '직접 벌수록 붙어요' : A.fac[3] >= 0.7 ? '직급을 올려야 붙어요' : '전문성 단가를 올려야 붙어요') + '</b></li></ul>';
+    b += '<p>사주에는 10년마다 바뀌는 큰 흐름(대운)이 있어요. ' + esc(N) + '님은 <b>' + D.year + '~' + de + '년</b>에 <b>' + { hi: '좋은 10년', mid: '무난한 10년', warn: '버티는 10년' }[D.v] + '</b>을 지나고 있어요.</p><ul class="plain">' +
+      '<li><b>' + DAEUN_G[D.g] + '.</b> 10년 흐름의 윗글자가 「' + GP[D.g] + '」이에요.</li>' +
+      (D.gb !== D.g ? '<li><b>' + DAEUN_G[D.gb] + '.</b> 아랫글자는 「' + GP[D.gb] + '」이에요.</li>' : '') +
+      (D.why.length ? '<li><b>이 10년의 핵심 — ' + D.why.slice(0, 2).join(', ') + '.</b></li>' : '') + '</ul>';
+    b += '<p>' + (D.v === 'hi' ? '정리하면, <b>지금 10년은 큰 흐름이 ' + esc(N) + '님 편이에요.</b> 그런데도 요즘 떠나고 싶다면 그건 10년 흐름 때문이 아니라 그해의 운 때문일 가능성이 커요.'
+      : D.v === 'warn' ? '정리하면, <b>지금 10년은 버티면서 다지는 시기예요.</b> 자리를 크게 바꾸기보다 실력과 기록을 쌓아 다음 10년(' + (A.nextD ? A.nextD.year + '년~' : '') + ')을 준비하는 게 좋아요.'
+      : '정리하면, <b>지금 10년은 크게 끌어올리지도 끌어내리지도 않는 시기예요.</b> 그해그해의 흐름을 보고 움직이면 돼요.') + '</p>';
+    H += item('s33', '🧭', '3-3', '지금 ' + esc(N) + '님의 10년 흐름<br>(' + D.year + '~' + de + '년)', '계산', b, true);
+  }
+
+  // 3-4
+  var hot = A.years.slice(0, 3).filter(function (y) { return y.v === 'warn'; });
+  var r1 = A.gwanMix ? ['기준이 둘이에요.', '사주에 「나를 붙잡는 기준」이 두 종류 같이 있어요. 남아 있으면 「조직 기준에 맞추느라 내가 닳는다」가 불안하고, 나가면 「새 기준을 처음부터 다시 맞춰야 한다」가 불안해요.']
+    : A.fac[3] < 0.35 ? ['붙잡아 주는 틀이 약해요.', '나를 잡아 주는 기준이 약해서, 한 곳에 오래 있으면 「이게 맞나」 하는 의문이 자주 올라와요. 그렇다고 나가면 기준이 더 흐려질까 봐 불안해요.']
+    : ['기준과 내 마음이 부딪혀요.', '조직이 주는 기준은 분명한데, 그게 내가 하고 싶은 방향과 어긋날 때 마음이 흔들려요. 남으면 내 방식을 잃을까, 나가면 기준을 잃을까 불안해요.'];
+  var r2 = A.avg !== null ? ['지쳐서 떠나고 싶은 거예요.', '「' + GP[A.avg] + '」(' + GSHORT[A.avg] + ')' + eun(GSHORT[A.avg]) + ' ' + pct(A.share[A.avg]) + '%로 넘치고, 「' + GP[A.ypg] + '」(' + GSHORT[A.ypg] + ')' + eun(GSHORT[A.ypg]) + ' ' + pct(A.share[A.ypg]) + '%로 모자라요. 그래서 떠나고 싶은 마음의 상당 부분은 일이 싫어서 생긴 게 아니에요. <b>' + NEED_LINE[A.ypg] + iga(NEED_LINE[A.ypg]) + ' 없어서</b> 생긴 거예요.']
+    : ['채워지지 않아서 떠나고 싶은 거예요.', '「' + GP[A.ypg] + '」이 모자란 사주라, 지금 자리에서 그게 채워지지 않으면 떠나고 싶어져요.'];
+  var r3 = hot.length ? [hot.map(function (y) { return y.year; }).join(' · ') + '년이 유독 무거워요.', '이 시기에는 ' + hot[0].why.slice(0, 2).join(', ') + '. <b>떠나고 싶은 마음이 가장 큰 때</b>이고, 그 마음의 상당 부분은 운에서 온 과열이에요.']
+    : ['지금은 운이 특별히 무겁지 않아요.', '가까운 3년은 흐름이 크게 막히지 않아요. 그래서 지금 떠나고 싶다면 그건 운보다 <b>실제 조건</b>의 문제일 가능성이 커요. 조건을 표로 비교해 보세요.'];
+  var worstM2 = A.months.slice().sort(function (a, c) { return a.sc - c.sc; })[0];
+  b = '<ul class="checks"><li>' + r1[0] + '</li><li>' + r2[0] + '</li><li>' + r3[0] + '</li></ul><ol class="plain">' +
+    [r1, r2, r3].map(function (r) { return '<li><b>' + r[0] + '</b> ' + r[1] + '</li>'; }).join('') + '</ol>';
+  b += '<div class="step">그래서 이렇게 판단하세요</div><div class="tip"><b>오퍼가 왔을 때 체크리스트</b>① 연봉은 얼마인가<br>② ' + (A.avg !== null ? '「' + GSHORT[A.avg] + '」 쪽 부담이 지금보다 줄어드는가' : '내 강점을 쓸 수 있는 자리인가') + '<br>③ ' + NEED_CHECK[A.ypg] + '<br>→ <b>②가 줄고 ③이 채워지는 곳만</b> 진지하게 보세요. 연봉만 오르고 ②③이 그대로면 2년 뒤 똑같이 지쳐요.</div>';
+  if (worstM2.v === 'warn') b += '<div class="warnbox"><b>이것만은 꼭</b>' + worstM2.y + '년 ' + worstM2.m + '월은 앞으로 14개월 중 흐름이 가장 무거운 달이에요. 이 달에는 감정이 뜨거워지기 쉬우니 입사 수락·퇴사 결정을 하지 마세요.</div>';
+  H += item('s34', '😰', '3-4', '나가도 불안,<br>남아도 불안한 이유', '사주 구조', b, true);
+  H += nextBtn('t4', 'CHAPTER 4 이어보기', '커리어 하이와 인생 황금기');
+  return H;
+}
+function vword(v) { return { hi: '좋은 해', mid: '무난한 해', warn: '버티는 해' }[v]; }
+
+function buildCh4(A) {
+  var N = A.N, H = '';
+  H += chHead('CHAPTER 4.', '커리어 하이와', '인생 황금기', '일에서 가장 빛나는 때와 <em>돈이 붙는 때</em>를 짚어드려요.', '💰');
+  var ten = A.years.slice(0, 11);
+  var hiY = ten.filter(function (y) { return y.v === 'hi'; }), waY = ten.filter(function (y) { return y.v === 'warn'; });
+  var b = '<ul class="checks"><li>이직·직무 전환이 유리한 해 — <b>' + (hiY.length ? hiY.map(function (y) { return y.year; }).join(' · ') + '년' : '10년 안에 뚜렷한 해 없음') + '</b></li>' +
+    '<li>창업해 볼 만한 시기 — <b>' + (A.types.lab['창업형'] === '약함' ? '따로 꼽지 않아요' : (hiY.filter(function (y) { return y.g === 1 || y.g === 2 || y.gb === 2; })[0] || hiY[0] || { year: '—' }).year + '년') + '</b></li>' +
+    '<li>큰 결정을 피할 해 — <b>' + (waY.length ? waY.map(function (y) { return y.year; }).join(' · ') + '년' : '10년 안에 크게 없어요') + '</b></li></ul>';
+  b += '<p class="small">해마다 부족한 기운이 들어오는지, 회복 자리가 단단해지는지 흔들리는지를 점수로 매겨 「좋은 해 / 무난한 해 / 버티는 해」로 나눴어요.</p><ul class="yrs">';
+  var bestTen = ten.slice().sort(function (a, c) { return c.sc - a.sc; })[0];
+  ten.forEach(function (y) {
+    var head = y === bestTen && y.v === 'hi' ? '<b>가까운 10년 중 가장 좋은 해예요.</b> ' : '';
+    var desc = y.why.length ? y.why.slice(0, 2).join(', ') + '.' : EVENT[y.g] + '.';
+    var dd = y.v === 'hi' ? '✅ 할 것 — 면접·협상·승진 도전처럼 직접 나서는 일 ❌ 안 할 것 — 결과만 기다리며 시간 보내기'
+      : y.v === 'warn' ? '✅ 할 것 — 지금 자리 지키기, 휴가·건강검진 일정을 1월에 먼저 확정 ❌ 안 할 것 — 이직·퇴사·큰 지출'
+      : '✅ 할 것 — ' + GROUP_DO[y.g] + ' ❌ 안 할 것 — 좋은 때를 기다리느라 지금 온 기회 미루기';
+    b += '<li class="' + (y.v === 'hi' ? 'up' : y.v === 'warn' ? 'down' : '') + '"><span class="y">' + y.year + '년 (만 ' + y.age + '세)</span>' + tagV(y.v, vword(y.v) + (y.ym ? ' · 이동수' : '')) +
+      '<br>' + head + desc + '<span class="dd">' + dd + '</span></li>';
+  });
+  b += '</ul>';
+  H += item('s41', '📊', '4-1', '판이 바뀌는 해는 언제일까?', '사주 구조', b, true);
+
+  // 4-2 하이
+  function win(from, to, len) {
+    var best = null;
+    for (var s = from; s + len - 1 <= to; s++) {
+      var sum = 0, ok = true;
+      for (var k = 0; k < len; k++) { var y = A.yearOf(s + k); if (!y) { ok = false; break; } sum += y.sc; }
+      if (ok && (!best || sum > best.sum)) best = { s: s, e: s + len - 1, sum: sum };
+    }
+    return best;
+  }
+  var w1 = win(A.nowY, A.nowY + 14, 3), w2 = w1 ? win(w1.e + 5, A.nowY + 25, 2) : null;
+  b = '';
+  if (w1) {
+    var mid = A.yearOf(w1.s + 1), dmid = A.daeunAt(w1.s + 1), rapid = dmid && dmid.v === 'hi';
+    var runs = [], cur = [];
+    A.years.forEach(function (y) { if (y.v === 'warn') cur.push(y); else { if (cur.length >= 2) runs.push(cur); cur = []; } });
+    if (cur.length >= 2) runs.push(cur);
+    var caution = runs.filter(function (r) { return r[0].year > A.nowY; })[0] || runs[0];
+    b += '<ul class="checks"><li>1차 하이: <b>만 ' + (w1.s - A.IN.year) + '~' + (w1.e - A.IN.year) + '세 (' + w1.s + '~' + w1.e + '년)</b></li>' +
+      (w2 ? '<li>2차 하이: <b>만 ' + (w2.s - A.IN.year) + '~' + (w2.e - A.IN.year) + '세 (' + w2.s + '~' + w2.e + '년)</b></li>' : '') +
+      '<li>쑥 오르는 형? 차곡차곡 쌓는 형? — <b>' + (rapid ? '1차는 쑥, 그 뒤는 차곡차곡' : '차곡차곡 쌓는 누적형') + '</b></li></ul>';
+    b += '<div class="step">1차 하이 — 만 ' + (w1.s - A.IN.year) + '~' + (w1.e - A.IN.year) + '세</div><p>' +
+      (rapid ? '10년 단위의 큰 흐름도 좋고, 그 안에서 해마다의 운도 정점을 찍어요. <b>큰 흐름과 그해 운이 같은 방향으로 겹치는 구간</b>이라 한 번에 크게 올라가요.' : '가까운 15년 중 해마다의 흐름이 가장 좋게 몰리는 3년이에요. 큰 흐름이 통째로 끌어올려 주지는 않아서, 이 3년에 <b>한 단계씩 확실히 올라서는 게</b> 중요해요.') +
+      ' 직함이 붙거나, 더 좋은 곳으로 옮기거나, 연봉이 크게 뛰는 일이 이때 몰려요.</p>';
+    if (w2) b += '<div class="step">2차 하이 — 만 ' + (w2.s - A.IN.year) + '~' + (w2.e - A.IN.year) + '세</div><p>1차 때 얻은 자리 위에서 <b>책임 범위가 넓어지는 시기</b>예요. 팀을 이끌거나 내 이름으로 일을 맡게 될 가능성이 커요.</p>';
+    if (caution) {
+      var cs = caution[0].year, ce = caution[caution.length - 1].year;
+      b += '<div class="step">주의할 구간 — 만 ' + (cs - A.IN.year) + '~' + (ce - A.IN.year) + '세 (' + cs + '~' + ce + '년)</div><p>' + caution.length + '년 연속 「버티는 해」예요. ' + (caution[0].why.length ? caution[0].why[0] + '. ' : '') + '조직 개편이나 담당 변경 같은 일이 이때 몰리기 쉬워요.</p>' +
+        '<div class="tip"><b>이렇게 대비하세요</b>이 구간에는 새 일을 벌이지 말고, 그 전에 얻은 자리와 자격을 지키는 데 집중하세요. 매년 1월에 연차 휴가 일정부터 달력에 넣으세요.</div>';
+    }
+  }
+  H += item('s42', '🤩', '4-2', '나의 커리어 하이는<br>언제 올까?', '사주 구조', b, true);
+
+  // 4-3 재물
+  var mo = moneyInfo(A), tc = A.tc;
+  var save = tc['정재'] > 0;
+  var futJ = A.daeun.filter(function (d) { return d.year > A.nowY && SE.TENGOD[SE.stemTenGod(A.dm, d.s)] === '정재'; })[0];
+  var bestW = null;
+  for (var s = A.nowY; s + 4 <= A.nowY + 20; s++) {
+    var sum = 0, jae = 0;
+    for (var k = 0; k < 5; k++) { var y = A.yearOf(s + k); if (!y) break; sum += y.sc + ((y.g === 2 || y.gb === 2) ? 2 : 0); if (y.g === 2 || y.gb === 2) jae++; }
+    if (!bestW || sum > bestW.sum) bestW = { s: s, e: s + 4, sum: sum, jae: jae };
+  }
+  b = '<ul class="checks"><li>월급으로 부자 될까, 사업으로 부자 될까 — <b>' + (mo.biz ? '사업·부업 쪽' : '월급') + '</b></li>' +
+    '<li>연봉이 오르는 형? 자산을 모으는 형? — <b>' + (save ? '차곡차곡 모으는 형' : '연봉이 오르는 형' + (futJ ? ', ' + Math.floor((futJ.year - A.IN.year) / 10) * 10 + '대부터 모으기 시작' : '')) + '</b></li>' +
+    '<li>돈이 가장 많이 붙는 시기 — <b>' + bestW.s + '~' + bestW.e + '년 (만 ' + (bestW.s - A.IN.year) + '~' + (bestW.e - A.IN.year) + '세)</b></li></ul>';
+  b += '<div class="step">' + (mo.biz ? '사업·부업 쪽이에요' : '월급형이에요') + '</div><p>' + mo.p1 + '</p>';
+  b += '<div class="step">' + (save ? '차곡차곡 모으는 형이에요' : '연봉이 오르는 형이에요') + '</div><p>' +
+    (save ? '사주에 「차곡차곡 모으는 돈」 기운이 겉으로 드러나 있어요. 큰돈이 한 번에 들어오기보다 <b>꾸준히 모아서 불리는 방식</b>이 잘 맞아요.'
+      : '사주에 「차곡차곡 모으는 돈」 기운이 겉으로는 안 보여요. 그래서 모으기보다 <b>연봉과 단가를 올리는 쪽</b>에서 돈이 붙어요.' + (futJ ? ' ' + futJ.year + '년부터 시작되는 10년 흐름에 그 「모으는 돈」 기운이 들어와요. 그때부터 자산을 모으는 구조가 열려요.' : '')) + '</p>';
+  b += '<div class="step">돈이 가장 많이 붙는 5년 — ' + bestW.s + '~' + bestW.e + '년</div><p>가까운 20년 중 흐름 점수와 「돈」 기운이 들어오는 해를 합쳐 가장 높은 5년이에요. 이 5년 중 ' + bestW.jae + '번은 「돈」 기운이 그해에 직접 들어와요.</p>';
+  b += '<div class="tip"><b>이렇게 준비하세요</b>① 이 구간 직전 해에 연봉 협상 근거(해낸 일 3개)를 미리 정리해 두세요.<br>② 돈이 들어오는 해에는 <b>인상분의 절반을 자동이체로 먼저 떼어 두는 장치</b>를 만드세요. 들어온 돈이 그대로 남는 사람은 드물어요.</div>';
+  H += item('s43', '💵', '4-3', '돈이 가장 많이 붙는 때는<br>언제일까?', '옛 해석', b, true);
+  H += nextBtn('t5', '풀이 근거 보기', '사주 여덟 칸이 말하는 것 · 용어 풀이');
+  return H;
+}
+
+function buildCh5(A) {
+  var R = A.R, N = A.N, H = '';
+  H += chHead('APPENDIX.', '이 풀이는', '어디서 나왔을까?', '궁금한 분을 위해 <em>계산 근거와 용어</em>를 쉽게 정리했어요.', '📐');
+  var labs = [['시', '태어난 시'], ['일', '태어난 날 (나)'], ['월', '태어난 달'], ['연', '태어난 해']];
+  var b = '<p>사주는 태어난 해·달·날·시를 각각 두 글자씩, 모두 여덟 글자로 나타낸 거예요.</p><div class="pillars">' + labs.map(function (l) {
+    var c = A.byLab[l[0]];
+    if (!c) return '<div class="pl"><div class="lb">' + l[1] + '</div><div class="gz" style="color:var(--faint)">?</div><div class="tg">모름</div></div>';
+    var si = SE.STEM_C.indexOf(c.stem), bi = SE.BR_C.indexOf(c.branch);
+    return '<div class="pl' + (l[0] === '일' ? ' me' : '') + '"><div class="lb">' + l[1] + '</div><div class="gz"><span class="' + EL_CLS[sEl(si)] + '">' + c.stem + '</span><span class="' + EL_CLS[BR_EL[bi]] + '">' + c.branch + '</span></div><div class="tg">' + STEM_K[si] + BR_K[bi] + '</div></div>';
+  }).join('') + '</div><p class="small">글자 색 = 그 글자의 기운 (초록 나무 · 빨강 불 · 노랑 흙 · 회색 쇠 · 파랑 물) · 「태어난 날」의 윗글자 <b>' + SE.STEM_C[A.dm] + '(' + STEM_IMG[A.dm] + ')</b>' + iga(STEM_IMG[A.dm]) + ' 바로 ' + esc(N) + '님 자신이에요.</p>';
+  H += item('s51', '🀄', 'A', esc(N) + '님의 사주표', '계산', b);
+
+  var rows = '';
+  [['연', '간'], ['연', '지'], ['월', '간'], ['월', '지'], ['일', '지'], ['시', '간'], ['시', '지']].forEach(function (p) {
+    var c = A.byLab[p[0]]; if (!c) return;
+    var isStem = p[1] === '간', tg = isStem ? c.stemTenGod : c.branchTenGod, g = GI[tg];
+    var txt = CELL_TXT[p[0]][g], suf = [];
+    if (isStem) {
+      var cs = R.charStatus.filter(function (x) { return x.label === p[0]; })[0];
+      if (cs && cs.verdict === '약함') suf.push('힘이 약해서 바로 쓰이지는 않아요.');
+    } else {
+      if (c.gongmang) suf.push('빈 칸이라 늦게 채워져요.');
+      if (R.relations.some(function (r) { return r.t === '충' && r.w && r.w.split('·').indexOf(p[0]) >= 0; })) suf.push('부딪히는 글자가 있어 흔들릴 때가 있어요.');
+      if (A.gbi !== null && A.R.geupso.critical.pillar === p[0]) suf.unshift('<b>회복이 기대고 있는 단 하나의 자리예요.</b>');
+      if (A.natalYm && A.natalYm.at === p[0]) suf.push('이동 기운이 앉아 있어요.');
+    }
+    rows += '<tr><td>' + (p[0] === '연' ? '해' : p[0] === '월' ? '달' : p[0] === '일' ? '날' : '시') + ' · ' + (isStem ? '윗글자' : '아랫글자') + '</td><td>' + CELL_AREA[p[0] + p[1]] + '</td><td>' + GP[g] + '<br><span class="small">' + GSHORT[g] + '</span></td><td>' + txt + (suf.length ? ' ' + suf.join(' ') : '') + '</td></tr>';
+  });
+  b = '<p>사주의 각 칸은 인생의 다른 영역을 맡고 있어요. ' + esc(N) + '님 자신(태어난 날 윗글자)을 뺀 칸들을 일과 연결해 풀었어요.</p><div class="scroll"><table><tr><th>칸</th><th>맡은 영역</th><th>앉은 힘</th><th>그래서 일에서는</th></tr>' + rows + '</table></div>';
+  H += item('s52', '🏛️', 'B', '사주 여덟 칸이 말하는 것', '사주 구조', b);
+
+  var gb = A.R.geupso && A.R.geupso.critical;
+  b = '<div class="scroll"><table><tr><th>이 리포트의 말</th><th>사주 용어</th><th>뜻</th></tr>' +
+    [['붙잡는 틀', '관성', '규칙·책임·상사·평가·직함. 나를 다스리는 기운'], ['받아들이는 힘', '인성', '배움·분석·자격·보호. 나를 채워 주는 기운'], ['버티는 힘', '비겁', '나 자신과 동료. 같은 편이 되어 주는 기운'],
+     ['내보내는 힘', '식상', '표현·결과물·배출. 내가 밖으로 내놓는 기운'], ['쓰는 힘', '재성', '돈·기회·현실 감각. 내가 다루고 쓰는 기운'],
+     ['부족해서 채워야 할 기운', '용신', esc(N) + '님은 ' + EL_PLAIN[A.yp] + ' — 「' + GP[A.ypg] + '」에 해당해요'],
+     ['회복이 기대고 있는 자리', '급소', gb ? esc(N) + '님은 ' + { '연': '태어난 해', '월': '태어난 달', '일': '태어난 날', '시': '태어난 시' }[gb.pillar] + ' 아랫글자(' + gb.branch + ')' : '이 사주는 하나로 좁혀지지 않아요'],
+     ['10년 흐름 / 그해 운', '대운 / 세운', '10년마다 바뀌는 큰 흐름 / 해마다 바뀌는 흐름'], ['이동 기운', '역마', '자리를 옮기고 싶어지는 기운'],
+     ['압박이 실력이 되는 구조', '관인상생', '붙잡는 틀 → 받아들이는 힘 → 나로 이어지는 통로']].map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join('') + '</table></div>';
+  H += item('s53', '📖', 'C', '용어 풀이', '', b);
+
+  var L = [];
+  if (!A.R.input.hourKnown) L.push('<b>태어난 시각</b> — 시각을 모르는 상태라 「태어난 시」 두 글자 없이 여섯 글자로 풀었어요. 시각을 알면 「결과물을 내놓는 방식」「결과가 쌓이는 곳」 풀이가 더해져요.');
+  else if (A.R.correction && (A.R.correction.hourChanged || A.R.correction.dayChanged)) L.push('<b>태어난 시각</b> — 한국 시간을 실제 해의 위치로 바꾸면(32분 앞당기면) 태어난 시의 두 글자가 바뀌어요. 지금 결과는 ' + (A.corrected ? '보정한' : '보정하지 않은') + ' 시각 기준이에요. 맨 위 버튼으로 다른 쪽도 볼 수 있어요.');
+  if (A.R.strength.borderline) L.push('<b>기운의 세기</b> — 「강하지도 약하지도 않은」 경계에 있어서 계산 방식에 따라 판정이 달라질 수 있어요.');
+  if (A.ypFallback) L.push('<b>부족한 기운</b> — 계산에서 하나로 정해지지 않아, 가장 작은 기운을 부족한 기운으로 놓고 풀었어요.');
+  L.push('<b>대운 시작 나이</b> — 앱마다 계산 방식이 달라 10년 흐름이 바뀌는 해가 1년쯤 다르게 보일 수 있어요.');
+  L.push('<b>날짜별 운</b> — 이직운 캘린더는 사주 해석 중 근거가 가장 약한 부분이에요. 해나 달의 흐름과 다르면 해·달을 따르세요.');
+  L.push('<b>직무 연결</b> — 사주를 직업에 연결하는 기준은 옛 책에 없어서 이 서비스가 정한 기준이에요. 기준이 바뀌면 TOP3와 커리어 유형이 같이 바뀔 수 있어요.');
+  L.push('<b>음력</b> — 이 계산기는 양력만 받아요. 음력 생일은 양력으로 바꿔서 넣어야 정확해요.');
+  H += item('s54', '⚠️', 'D', '확인이 필요한 부분', '', '<ul class="plain">' + L.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>');
+  H += nextBtn('t1', '처음으로', 'CHAPTER 1 · 타고난 재능');
+  return H;
+}
+
+/* ══════════ 화면 전환 ══════════ */
+var tabs = [].slice.call(document.querySelectorAll('[role=tab]'));
+function sel(t, scroll) {
+  tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $(x.getAttribute('aria-controls')).hidden = !on; });
+  t.scrollIntoView({ block: 'nearest', inline: 'center' });
+  if (scroll) { var p = $(t.getAttribute('aria-controls')); window.scrollTo({ top: p.getBoundingClientRect().top + window.scrollY - document.querySelector('.appbar').offsetHeight, behavior: 'smooth' }); }
+}
+tabs.forEach(function (t, i) {
+  t.addEventListener('click', function () { sel(t, true); });
+  t.addEventListener('keydown', function (e) {
+    var n = null;
+    if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+    if (e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+    if (n) { e.preventDefault(); sel(n); n.focus(); }
+  });
+});
+
+var CUR = null;
+function shift32(IN) {
+  var tot = IN.hour * 60 + (IN.minute || 0) - 32, ds = 0;
+  if (tot < 0) { tot += 1440; ds = -1; }
+  var d = new Date(Date.UTC(IN.year, IN.month - 1, IN.day + ds));
+  return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate(), hour: Math.floor(tot / 60), minute: tot % 60, gender: IN.gender, name: IN.name };
+}
+function render(IN, corrected) {
+  CUR = { IN: IN, corrected: corrected };
+  var A = analyze(corrected ? shift32(IN) : IN);
+  A.IN = IN; A.N = IN.name || '당신'; A.corrected = corrected;
+  $('head').innerHTML = buildHead(A);
+  $('p1').innerHTML = buildCh1(A);
+  $('p2').innerHTML = buildCh2(A);
+  $('p3').innerHTML = buildCh3(A);
+  $('p4').innerHTML = buildCh4(A);
+  $('p5').innerHTML = buildCh5(A);
+  $('inputView').hidden = true; $('resultView').hidden = false;
+  sel(tabs[0]);
+  [].forEach.call(document.querySelectorAll('.next'), function (b) { b.addEventListener('click', function () { sel($(b.getAttribute('data-go')), true); }); });
+  var fb = $('fixBtn'); if (fb) fb.addEventListener('click', function () { render(IN, true); });
+  var ub = $('unfixBtn'); if (ub) ub.addEventListener('click', function () { render(IN, false); });
+  calInit(A);
+  var q = '?y=' + IN.year + '&m=' + IN.month + '&d=' + IN.day + (IN.hour === null ? '' : '&h=' + IN.hour + '&mi=' + IN.minute) + '&g=' + IN.gender + (IN.name ? '&n=' + encodeURIComponent(IN.name) : '') + (corrected ? '&c=1' : '');
+  try { history.replaceState(null, '', location.pathname + q); } catch (e) {}
+  window.scrollTo(0, 0);
+}
+function calInit(A) {
+  var EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var cur = 0, M = A.cal, today = A.now;
+  function draw() {
+    var c = M[cur], first = new Date(c.y, c.m - 1, 1).getDay(), days = new Date(c.y, c.m, 0).getDate();
+    var h = '<div><div class="mn">' + EN[c.m - 1] + '</div><div class="yr">' + c.y + '</div><div class="gd">이직운이 좋은 날<b>' + c.good.length + (c.good.length === 1 ? ' Day' : ' Days') + '</b></div><div class="mo">' + tagV(c.v, '이 달의 흐름 · ' + { hi: '좋음', mid: '보통', warn: '조심' }[c.v]) + '</div></div><div class="dots">';
+    'SMTWTFS'.split('').forEach(function (d) { h += '<span class="w">' + d + '</span>'; });
+    for (var i = 0; i < first; i++) h += '<span class="d e"></span>';
+    for (var d = 1; d <= days; d++) {
+      var cls = c.good.indexOf(d) >= 0 ? ' good' : (c.move.indexOf(d) >= 0 ? ' move' : '');
+      if (c.y === today.getFullYear() && c.m === today.getMonth() + 1 && d === today.getDate()) cls += ' today';
+      h += '<span class="d' + cls + '" title="' + c.m + '/' + d + '">' + d + '</span>';
+    }
+    $('calBody').innerHTML = h + '</div>';
+    $('calIdx').textContent = (cur + 1) + '/' + M.length;
+    $('calPrev').disabled = cur === 0; $('calNext').disabled = cur === M.length - 1;
+  }
+  $('calPrev').addEventListener('click', function () { if (cur > 0) { cur--; draw(); } });
+  $('calNext').addEventListener('click', function () { if (cur < M.length - 1) { cur++; draw(); } });
+  draw();
+}
+
+/* ══════════ 입력 폼 ══════════ */
+(function () {
+  var by = $('by'), bm = $('bm'), bd = $('bd'), bh = $('bh'), bi = $('bi'), thisY = new Date().getFullYear();
+  var o = '<option value="">년도</option>'; for (var y = thisY; y >= 1930; y--) o += '<option value="' + y + '">' + y + '년</option>'; by.innerHTML = o;
+  o = '<option value="">월</option>'; for (var m = 1; m <= 12; m++) o += '<option value="' + m + '">' + m + '월</option>'; bm.innerHTML = o;
+  function days() {
+    var y = +by.value || 2000, m = +bm.value || 1, n = new Date(y, m, 0).getDate(), cur = bd.value;
+    var s = '<option value="">일</option>'; for (var d = 1; d <= n; d++) s += '<option value="' + d + '">' + d + '일</option>';
+    bd.innerHTML = s; if (cur && +cur <= n) bd.value = cur;
+  }
+  days(); by.addEventListener('change', days); bm.addEventListener('change', days);
+  o = '<option value="">시</option><option value="unknown">모름</option>'; for (var h = 0; h <= 23; h++) o += '<option value="' + h + '">' + (h < 10 ? '0' : '') + h + '시</option>'; bh.innerHTML = o;
+  o = ''; for (var mi = 0; mi <= 59; mi++) o += '<option value="' + mi + '">' + (mi < 10 ? '0' : '') + mi + '분</option>'; bi.innerHTML = o;
+  bh.addEventListener('change', function () { bi.disabled = bh.value === 'unknown'; });
+  by.value = '';
+
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var err = '';
+    if (!by.value || !bm.value || !bd.value) err = '생년월일을 모두 골라 주세요.';
+    else if (!bh.value) err = '태어난 시각을 고르거나 「모름」을 골라 주세요.';
+    if (err) { $('err').textContent = err; return; }
+    $('err').textContent = '';
+    var IN = { year: +by.value, month: +bm.value, day: +bd.value, hour: bh.value === 'unknown' ? null : +bh.value, minute: bh.value === 'unknown' ? 0 : +bi.value,
+      gender: document.querySelector('input[name=g]:checked').value, name: $('name').value.trim() };
+    try { render(IN, false); } catch (ex) { $('err').textContent = '계산 중 문제가 생겼어요. 입력값을 다시 확인해 주세요.'; if (window.console) console.error(ex); }
+  });
+  $('again').addEventListener('click', function () {
+    $('resultView').hidden = true; $('inputView').hidden = false;
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    window.scrollTo(0, 0);
+  });
+  $('share').addEventListener('click', function () {
+    var url = location.href, t = $('toast');
+    function done(msg) { t.textContent = msg; t.classList.add('on'); setTimeout(function () { t.classList.remove('on'); }, 1800); }
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { done('링크를 복사했어요'); }, function () { done(url); });
+    else done(url);
+  });
+
+  // URL로 바로 열기: ?y=&m=&d=&h=&mi=&g=&n=&c=1
+  var Q = new URLSearchParams(location.search);
+  if (Q.get('y') && Q.get('m') && Q.get('d')) {
+    var IN = { year: +Q.get('y'), month: +Q.get('m'), day: +Q.get('d'), hour: Q.get('h') === null || Q.get('h') === '' ? null : +Q.get('h'), minute: +(Q.get('mi') || 0), gender: Q.get('g') === 'M' ? 'M' : 'F', name: (Q.get('n') || '').slice(0, 12) };
+    by.value = IN.year; bm.value = IN.month; days(); bd.value = IN.day; bh.value = IN.hour === null ? 'unknown' : IN.hour; bi.value = IN.minute; bi.disabled = IN.hour === null;
+    $('name').value = IN.name; document.querySelector('input[name=g][value=' + IN.gender + ']').checked = true;
+    try { render(IN, Q.get('c') === '1' && IN.hour !== null); } catch (ex) { if (window.console) console.error(ex); }
+  }
+})();
+})();
+</script>
+</body>
+</html>
