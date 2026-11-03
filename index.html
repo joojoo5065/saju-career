@@ -253,7 +253,7 @@ footer{margin-top:40px;font-size:12px;color:var(--faint);line-height:1.7}
     <div class="chs">
       <div><span>CHAPTER 1</span><b>타고난 재능·맞는 직무</b>나에게 맞는 일 TOP3</div>
       <div><span>CHAPTER 2</span><b>나에게 맞는 커리어</b>승진형 · 점프형 · 창업형</div>
-      <div><span>CHAPTER 3</span><b>떠나고 싶은 이유</b>이직운 캘린더 · 달별 흐름</div>
+      <div><span>CHAPTER 3</span><b>이직·취업 타이밍</b>이직·취업운 캘린더 · 달별 흐름</div>
       <div><span>CHAPTER 4</span><b>커리어 하이</b>판이 바뀌는 해 · 돈 붙는 때</div>
     </div>
   </div>
@@ -285,6 +285,13 @@ footer{margin-top:40px;font-size:12px;color:var(--faint);line-height:1.7}
       <div class="seg" role="radiogroup" aria-labelledby="glab">
         <label><input type="radio" name="g" value="F" checked><span>여성</span></label>
         <label><input type="radio" name="g" value="M"><span>남성</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <span class="lab" id="slab">지금 상황 <small>상황에 맞춰 풀이가 달라져요</small></span>
+      <div class="seg" role="radiogroup" aria-labelledby="slab">
+        <label><input type="radio" name="s" value="work" checked><span>💼 일하는 중</span></label>
+        <label><input type="radio" name="s" value="prep"><span>📝 취업 준비 중</span></label>
       </div>
     </div>
     <p class="err" id="err" role="alert"></p>
@@ -531,6 +538,27 @@ var TYPE_INFO = {
 
 var EVENT = ['같이 하거나 겨루는 사람이 늘어나요', '만들고 내보낼 일이 늘어나요', '돈과 실무가 늘어나요', '책임과 자리가 걸려요', '배움과 도움이 들어와요'];
 var GROUP_DO = ['같이 할 사람을 정하고 몫을 숫자로 적어 두기', '만든 것 하나를 밖에 내놓기(발표·공개·제출)', '들어오는 돈의 비율을 정해 먼저 떼어 두기', '맡는 책임의 범위를 문서로 정해 두기', '자격·교육 하나를 끝까지 마치기'];
+var PREP_DO = [
+  '같이 준비할 사람이 생기는 달. 스터디·모의면접 짝을 구하기',
+  '만들고 보여 줄 일이 늘어나는 달. 포트폴리오·자기소개서 완성하기',
+  '현실 감각이 살아나는 달. 지원할 곳의 연봉·조건을 표로 비교하기',
+  '자리와 책임이 걸리는 달. 공채·정규직 공고에 지원하기',
+  '배움과 도움이 들어오는 달. 자격증 시험·교육 하나 끝내기'
+];
+var PREP_LACK = [
+  '혼자 준비하는 시간이 길어지면 버티는 힘이 빨리 줄어요. 같이 준비할 사람이 있어야 오래 가요.',
+  '쌓은 걸 밖으로 보여 줄 기회가 없으면 답답함이 쌓여요. 작은 결과물이라도 자주 내놓아야 숨이 트여요.',
+  '성과가 눈에 안 보이는 기간이 길어지면 불안이 커져요. 준비한 것을 숫자로 기록해 두면 덜 흔들려요.',
+  '소속이 없는 기간 자체가 불안한 사주예요. 스터디·인턴처럼 잠시라도 「소속」이 있으면 안정돼요.',
+  '배우는 건 잘하는데, 충전 없이 공부만 이어 가면 바닥나요. 공부와 쉬는 시간을 같이 계획해야 해요.'
+];
+var PREP_TIP = [
+  '스터디나 모의면접 짝을 한 명 정해서 주 1회 만나세요. 혼자 버티는 시간을 줄이는 게 가장 큰 처방이에요.',
+  '2주에 한 번은 포트폴리오·글·작업물 하나를 밖에 공개해 보세요. 보여 줄 게 쌓일수록 불안이 줄어요.',
+  '「이번 주 지원 몇 곳, 서류 통과 몇 곳」을 숫자로 적어 두세요. 눈에 보이는 진척이 버티는 힘이 돼요.',
+  '매일 같은 시간에 시작하고 끝나는 「출퇴근 시간표」를 정하세요. 밖에서 정해 준 틀처럼 쓰면 하루가 흐려지지 않아요.',
+  '공부 시간만큼 쉬는 시간도 달력에 먼저 넣으세요. 주 1회는 공부와 상관없는 일을 하는 날로 비워 두세요.'
+];
 var DAEUN_G = ['같이 버텨 줄 동료와 경쟁자가 함께 늘어나요', '만들고 표현할 일이 늘어나요', '돈과 실무, 성과 책임이 늘어나요', '책임과 자리가 늘어나요', '배움과 자격, 도와주는 사람이 들어와요'];
 
 var CELL_AREA = { '연간': '처음 사회에 나설 때의 모습', '연지': '타고난 토대·배경', '월간': '사회로 나가는 첫 통로', '월지': '<b>직업의 본질</b>', '일지': '일상과 쉼', '시간': '결과물을 내놓는 방식', '시지': '결과가 쌓이는 곳' };
@@ -568,6 +596,8 @@ function ro(w) { var c = w.charCodeAt(w.length - 1); if (c < 0xAC00 || c > 0xD7A
 function ieyo(w) { return bat(w) ? '이에요' : '예요'; }
 function qg(g) { return '「' + GP[g] + '」'; }
 function first(s) { return s.split(/\.\s/)[0].replace(/\.$/, ''); }
+var MODE = 'work';   // work = 일하는 중 · prep = 취업 준비 중
+function W(work, prep) { return MODE === 'prep' ? prep : work; }
 var WEAPON = ['끝까지 밀고 나가는 뚝심', '새롭게 짜고 풀어내는 힘', '현실을 성과로 바꾸는 힘', '압박을 실력으로 바꾸는 힘', '빨리 배워 깊어지는 힘'];
 var NEED_CHECK = ['같이 버텨 줄 동료가 있는가', '내 아이디어를 낼 자리가 있는가', '성과가 보상으로 바로 이어지는가', '역할과 평가 기준이 분명한가', '배우고 쉴 시간이 보장되는가'];
 function sEl(s) { return Math.floor(s / 2); }
@@ -747,9 +777,9 @@ function buildHead(A) {
     key('가장 큰 무기', WEAPON[top], GP[top] + ' ' + pct(A.share[top]) + '%', 'b') +
     key('가장 잘 맞는 일', A.jobs[0].J.n, A.jobs[0].J.core, 'b') +
     key('커리어 유형', A.types.main, TYPE_INFO[A.types.main].d, 'b') +
-    key('가장 좋은 해', best.length ? best.map(function (y) { return y.year; }).join(' · ') + '년' : '뚜렷한 해 없음', best.length ? '옮기거나 올라가기 좋은 창' : '해마다 고르게 흘러가요', 'b') +
+    key('가장 좋은 해', best.length ? best.map(function (y) { return y.year; }).join(' · ') + '년' : '뚜렷한 해 없음', best.length ? W('옮기거나 올라가기 좋은 창', '취업·입사하기 좋은 창') : '해마다 고르게 흘러가요', 'b') +
     key('조심할 해', worst.length ? worst.map(function (y) { return y.year; }).join(' · ') + '년' : '크게 없음', worst.length ? '큰 결정은 미루는 게 좋아요' : '10년 안에 크게 막히는 해가 없어요', worst.length ? 'r' : 'b') +
-    key('가까운 기회의 달', bm.y + '년 ' + bm.m + '월', bm.v === 'hi' ? '면접·연봉 협상에 좋아요' : '6개월 중 흐름이 가장 나은 달', 'b') + '</div>';
+    key('가까운 기회의 달', bm.y + '년 ' + bm.m + '월', bm.v === 'hi' ? W('면접·연봉 협상에 좋아요', '서류 제출·면접에 좋아요') : '6개월 중 흐름이 가장 나은 달', 'b') + '</div>';
   H += '<p class="legend">각 판단 옆 라벨 — ' + lvl('계산') + '만세력으로 계산한 값 · ' + lvl('사주 구조') + '사주에서 바로 읽히는 것 · ' + lvl('옛 해석') + '예전부터 내려오는 해석 · ' + lvl('참고') + '해석이 갈리는 것 · ' + lvl('우리 기준') + '사주를 직업에 연결하려고 정한 기준</p>';
   return H;
 }
@@ -851,16 +881,18 @@ function buildCh1(A) {
       (w[1].indexOf(ypg) >= 0 ? (k === 'bad' ? ' · 부족한 힘을 쓰는 일이라 지금은 버거워요' : ' · 부족한 힘이 채워져요') : '');
     rows += '<tr><td>' + w[0] + '</td><td><span class="tag ' + k + '">' + { ok: '맞음', mid: '보통', bad: '안 맞음' }[k] + '</span></td><td>' + why + '</td></tr>';
   });
-  b = '<div class="fit"><div class="lab">지금 하는 일과<b>얼마나 맞을까?</b>' + lvl('우리 기준') + '</div><div class="big">' +
+  b = '<div class="fit"><div class="lab">' + W('지금 하는 일과', '지원하려는 일과') + '<b>얼마나 맞을까?</b>' + lvl('우리 기준') + '</div><div class="big">' +
     '<div><span><strong style="color:var(--good)">' + cnt.ok + '</strong><small>맞음</small></span></div><div><span><strong style="color:var(--warn)">' + cnt.mid + '</strong><small>보통</small></span></div><div><span><strong style="color:var(--risk)">' + cnt.bad + '</strong><small>안 맞음</small></span></div></div></div>' +
-    '<p class="small">회사에서 하는 일을 다섯 가지로 나눠 봤어요. 지금 내 일이 어느 줄에 많이 해당하는지 보면 궁합이 보여요.</p>' +
-    '<div class="scroll"><table><tr><th>이런 일을 하고 있다면</th><th>궁합</th><th>왜냐면</th></tr>' + rows + '</table></div>';
+    '<p class="small">' + W('회사에서 하는 일을 다섯 가지로 나눠 봤어요. 지금 내 일이 어느 줄에 많이 해당하는지 보면 궁합이 보여요.',
+      '회사에서 하는 일을 다섯 가지로 나눠 봤어요. 채용 공고의 「주요 업무」가 어느 줄에 많이 해당하는지 보면, 지원할 곳과의 궁합이 보여요.') + '</p>' +
+    '<div class="scroll"><table><tr><th>' + W('이런 일을 하고 있다면', '공고의 주요 업무가 이렇다면') + '</th><th>궁합</th><th>왜냐면</th></tr>' + rows + '</table></div>';
+  if (MODE === 'prep') b += '<div class="tip"><b>이렇게 써 보세요</b>지원할 공고를 고르면 「주요 업무」 줄을 위 표와 맞춰 보세요. 「맞음」 줄이 절반 이상인 공고를 1순위로, 「안 맞음」 줄이 절반 이상이면 연봉이 좋아도 후순위로 두세요.</div>';
   var gwanin = A.fac[3] >= 0.7 && A.fac[4] >= 0.7, gwanin2 = A.fac[3] > 0 && A.fac[4] > 0;
   b += '<div class="fit-label">사주 서비스의 「관인상생」 해석, 나에게 맞을까?</div><p>사주 서비스에서 자주 보이는 「관인상생(조직이 나를 키워 주는 구조)」이라는 해석은, ' +
     (gwanin ? '<b>' + esc(N) + '님에게 그대로 맞아요.</b> 「붙잡는 틀 → 받아들이는 힘 → 나」로 이어지는 통로가 끊긴 데 없이 이어져 있거든요. 조건은 하나예요. 들어오는 압박이 배움으로 바꿀 수 있는 양을 넘지 않아야 해요.'
       : gwanin2 ? '<b>' + esc(N) + '님에게는 절반만 맞아요.</b> 글자는 이어져 있지만 한쪽이 약해서 통로가 가늘어요. 조직에서 배운 것이 가늘게라도 내 실력으로 들어오는 정도로 보면 맞아요.'
       : '<b>' + esc(N) + '님에게는 잘 맞지 않아요.</b> 「붙잡는 틀」과 「받아들이는 힘」 중 하나가 사주에 거의 없어서, 조직이 나를 키워 주는 회로보다 내가 직접 만들어 인정받는 회로가 더 강해요.') + '</p>';
-  H += item('s16', '💞', '1-6', '지금 하는 일과의 궁합', '', b, true);
+  H += item('s16', '💞', '1-6', W('지금 하는 일과의 궁합', '지원하려는 일과의 궁합'), '', b, true);
   H += nextBtn('t2', 'CHAPTER 2 이어보기', '나에게 맞는 커리어는 어떤 구조일까');
   return H;
 }
@@ -935,7 +967,7 @@ function buildCh2(A) {
 
   b = '<p>' + money.p1 + '</p><p>' + money.p2 + '</p><div class="tip"><b>이렇게 해 보세요</b>' + money.tip + '</div>';
   H += item('s23', '💰', '2-3', '나에게 돈이 붙는 방식', '사주 구조', b);
-  H += nextBtn('t3', 'CHAPTER 3 이어보기', '나는 왜 떠나고 싶을까');
+  H += nextBtn('t3', 'CHAPTER 3 이어보기', W('나는 왜 떠나고 싶을까', '언제 취업운이 들어올까'));
   return H;
 }
 
@@ -963,7 +995,9 @@ function moneyInfo(A) {
 
 function buildCh3(A) {
   var N = A.N, H = '';
-  H += chHead('CHAPTER 3.', '나는 왜', '떠나고 싶을까?', '때마다 바뀌는 <em>이동의 흐름</em>을 보고, 떠나고 싶은 마음의 정체를 풀어드려요.', '🧭');
+  H += MODE === 'prep'
+    ? chHead('CHAPTER 3.', '언제', '취업운이 들어올까?', '해·달·날의 흐름에서 <em>새 자리로 들어가는 타이밍</em>을 짚어드려요.', '🧭')
+    : chHead('CHAPTER 3.', '나는 왜', '떠나고 싶을까?', '때마다 바뀌는 <em>이동의 흐름</em>을 보고, 떠나고 싶은 마음의 정체를 풀어드려요.', '🧭');
   // 캘린더
   var cal = [];
   for (var k = 0; k < 4; k++) {
@@ -976,26 +1010,32 @@ function buildCh3(A) {
     cal.push({ y: y, m: m, good: good, move: move, v: mj ? mj.v : 'mid' });
   }
   A.cal = cal;
-  var b = '<div class="calbox"><div class="top"><span>' + esc(N) + '님의 이직운 캘린더 <span id="calIdx">1/4</span></span><div class="calnav"><button type="button" id="calPrev" aria-label="이전 달">‹</button><button type="button" id="calNext" aria-label="다음 달">›</button></div></div>' +
-    '<div class="calbody" id="calBody" aria-live="polite"></div><div class="calleg"><i style="background:var(--pink)"></i>이직운이 좋은 날<i style="box-shadow:inset 0 0 0 1.5px var(--pink)"></i>이동수가 들어오는 날</div></div>';
-  b += '<div class="step">이 달력은 이렇게 쓰세요</div><p><b>분홍 날</b>은 부족한 기운이 들어오고 흐름이 받쳐 주는 날이에요. 면접·연봉 협상·중요한 발표처럼 <b>내가 직접 나서는 일</b>을 이 날에 잡으면 좋아요. <b>테두리만 있는 날</b>은 「움직이고 싶은 마음」이 올라오는 날이에요. 이력서 정리나 채용 공고 보기에 좋아요.</p>';
+  var luck = W('이직운', '취업운');
+  var b = '<div class="calbox"><div class="top"><span>' + esc(N) + '님의 ' + luck + ' 캘린더 <span id="calIdx">1/4</span></span><div class="calnav"><button type="button" id="calPrev" aria-label="이전 달">‹</button><button type="button" id="calNext" aria-label="다음 달">›</button></div></div>' +
+    '<div class="calbody" id="calBody" aria-live="polite"></div><div class="calleg"><i style="background:var(--pink)"></i>' + luck + '이 좋은 날<i style="box-shadow:inset 0 0 0 1.5px var(--pink)"></i>이동수가 들어오는 날</div></div>';
+  b += '<div class="step">이 달력은 이렇게 쓰세요</div>' + W(
+    '<p><b>분홍 날</b>은 부족한 기운이 들어오고 흐름이 받쳐 주는 날이에요. 면접·연봉 협상·중요한 발표처럼 <b>내가 직접 나서는 일</b>을 이 날에 잡으면 좋아요. <b>테두리만 있는 날</b>은 「움직이고 싶은 마음」이 올라오는 날이에요. 이력서 정리나 채용 공고 보기에 좋아요.</p>',
+    '<p><b>분홍 날</b>은 부족한 기운이 들어오고 흐름이 받쳐 주는 날이에요. <b>서류 제출·면접·인적성 시험</b>처럼 내가 직접 나서는 일을 이 날에 잡으면 좋아요. 면접 날짜를 고를 수 있으면 분홍 날로 골라 보세요. <b>테두리만 있는 날</b>은 「새 자리로 들어가는 기운」이 오는 날이에요. 지원서를 마무리해서 내거나 새 공고를 찾기에 좋아요.</p>');
   var thisY = A.yearOf(A.nowY), nextY = A.yearOf(A.nowY + 1);
   var febIn = cal.some(function (c) { return c.m === 2; });
   b += '<div class="notice">올해(' + A.nowY + '년)의 흐름은 <b>' + vword(thisY.v) + '</b>예요.' +
     (febIn ? ' 2월 4일 입춘부터는 ' + (A.nowY + (A.nowM <= 2 ? 0 : 1)) + '년의 흐름(' + vword((A.nowM <= 2 ? thisY : nextY).v) + ')으로 바뀌어요.' : '') +
-    ((thisY.v === 'warn' || (febIn && nextY.v === 'warn')) ? ' 무거운 해에는 좋은 날을 면접처럼 직접 하는 일에만 쓰고, 「입사 확정」「퇴사 통보」처럼 되돌리기 어려운 결정은 연봉·직무·입사일이 확실할 때만 내리세요.' : ' 좋은 날에는 직접 나서는 일을 잡고, 큰 결정은 조건을 먼저 확인한 뒤 내리세요.') + '</div>';
+    ((thisY.v === 'warn' || (febIn && nextY.v === 'warn'))
+      ? W(' 무거운 해에는 좋은 날을 면접처럼 직접 하는 일에만 쓰고, 「입사 확정」「퇴사 통보」처럼 되돌리기 어려운 결정은 연봉·직무·입사일이 확실할 때만 내리세요.',
+          ' 무거운 해에는 불합격 소식이 이어져도 「내가 부족해서」로 읽지 마세요. 흐름이 무거운 탓이 커요. 지원은 계속하되, 합격하면 연봉·직무·근무 조건을 꼼꼼히 확인하고 수락하세요.')
+      : W(' 좋은 날에는 직접 나서는 일을 잡고, 큰 결정은 조건을 먼저 확인한 뒤 내리세요.', ' 좋은 날에 지원과 면접을 몰아서 잡아 보세요.')) + '</div>';
   b += '<p class="small">' + lvl('참고') + '날짜 하나하나의 운은 사주 해석 중 근거가 가장 약한 부분이에요. 날짜를 고를 수 있을 때 참고하는 정도로만 쓰세요.</p>';
   // 월 14
   var bestM = A.months.slice().sort(function (a, c) { return c.sc - a.sc; })[0], worstM = A.months.slice().sort(function (a, c) { return a.sc - c.sc; })[0];
   b += '<h4>앞으로 14개월, 달마다 이렇게 보내세요</h4><div class="scroll"><table><tr><th>달</th><th>흐름</th><th>이렇게 보내세요</th></tr>';
   A.months.forEach(function (m) {
     var t;
-    if (m === bestM && m.v === 'hi') t = '<b>14개월 중 가장 좋은 달.</b> 면접·협상·결정 모두 이 달에';
-    else if (m === worstM && m.v === 'warn') t = '<b>14개월 중 가장 힘든 달.</b> 퇴사·이직·큰 결정은 이 달에 하지 않기. 휴가는 이 달에';
-    else if (m.v === 'hi') t = '기회의 달. 면접·연봉 협상·이동 결정에 좋아요';
-    else if (m.v === 'warn') t = '조심할 달. 큰 결정은 피하고 쉬는 일정을 먼저';
-    else t = EVENT[m.g] + '. ' + GROUP_DO[m.g];
-    if (m.ym && m.v !== 'warn') t += ' · 움직이고 싶은 마음이 올라와요';
+    if (m === bestM && m.v === 'hi') t = W('<b>14개월 중 가장 좋은 달.</b> 면접·협상·결정 모두 이 달에', '<b>14개월 중 가장 좋은 달.</b> 가장 가고 싶은 곳의 지원·면접을 이 달에');
+    else if (m === worstM && m.v === 'warn') t = W('<b>14개월 중 가장 힘든 달.</b> 퇴사·이직·큰 결정은 이 달에 하지 않기. 휴가는 이 달에', '<b>14개월 중 가장 힘든 달.</b> 결과에 흔들리기 쉬운 달. 지원은 줄이고 자격증·포트폴리오 보강에 집중');
+    else if (m.v === 'hi') t = W('기회의 달. 면접·연봉 협상·이동 결정에 좋아요', '기회의 달. 서류 제출·면접을 몰아서 잡기');
+    else if (m.v === 'warn') t = W('조심할 달. 큰 결정은 피하고 쉬는 일정을 먼저', '조심할 달. 무리해서 아무 데나 지원하지 않기. 준비에 집중');
+    else t = MODE === 'prep' ? PREP_DO[m.g] : EVENT[m.g] + '. ' + GROUP_DO[m.g];
+    if (m.ym && m.v !== 'warn') t += W(' · 움직이고 싶은 마음이 올라와요', ' · 새 자리로 들어가는 기운이 와요');
     b += '<tr><td style="white-space:nowrap;font-weight:700">' + m.y + '.' + m.m + '</td><td>' + tagV(m.v, { hi: '좋음', mid: '보통', warn: '조심' }[m.v]) + '</td><td>' + t + '</td></tr>';
   });
   b += '</table></div><p class="small">사주에서 달은 절기(매달 4~8일경)에 바뀌어요. 표의 「' + A.months[1].m + '월」은 ' + A.months[1].m + '월 초 절기부터 다음 달 초 절기 전까지예요.</p>';
@@ -1006,27 +1046,43 @@ function buildCh3(A) {
   var goodYm = ymYears.filter(function (y) { return y.v === 'hi'; })[0], anyYm = ymYears[0];
   var POS = { '연': '사회에 나설 때부터 이동 기운이 깔려 있어요. 일찍부터 여러 곳을 경험하는', '월': '일하는 자리 자체에 이동 기운이 있어요. 일 때문에 자주 움직이는', '일': '일상 가까이에 이동 기운이 있어요. 생활 반경이 넓고 변화를 즐기는', '시': '「결과물이 쌓이는 자리」에 이동 기운이 있어요. 한 곳에서 결과를 만든 다음 자리를 옮기며 인정받는' };
   var moveY = goodYm || A.years.filter(function (y) { return y.v === 'hi' && y.year > A.nowY; })[0];
-  b = '<ul class="checks"><li>타고난 이동수 — <b>' + (A.natalYm ? '있어요' : '없어요, 운에서 올 때 움직이는 쪽') + '</b></li><li>실제로 옮기기 좋은 해 — <b>' + (moveY ? moveY.year + '년' : '뚜렷한 해 없음') + '</b></li></ul>';
+  var firstHiM = A.months.filter(function (m) { return m.v === 'hi'; })[0];
+  var firstHiY = A.years.filter(function (y) { return y.v === 'hi'; })[0];
+  b = '<ul class="checks"><li>가장 가까운 ' + luck + '의 달 — <b>' + (firstHiM ? firstHiM.y + '년 ' + firstHiM.m + '월' : '14개월 안에 뚜렷한 달 없음') + '</b></li>' +
+    '<li>가장 가까운 ' + luck + '의 해 — <b>' + (firstHiY ? firstHiY.year + '년 (만 ' + firstHiY.age + '세)' : '뚜렷한 해 없음') + '</b></li>' +
+    '<li>타고난 이동수 — <b>' + (A.natalYm ? '있어요' : '없어요, 운에서 올 때 움직이는 쪽') + '</b></li></ul>';
+  b += '<div class="step">가장 가까운 ' + luck + '</div><p>' +
+    (firstHiM ? '<b>' + firstHiM.y + '년 ' + firstHiM.m + '월</b>에 ' + (firstHiM.why[0] || '흐름이 받쳐 줘요') + '. ' + W('앞으로 14개월 중 면접·협상을 처음 잡기 좋은 달이에요.', '앞으로 14개월 중 지원·면접을 처음 몰아서 잡기 좋은 달이에요. 이 달에 낼 수 있게 한 달 전부터 지원서를 준비해 두세요.') : '앞으로 14개월 안에는 크게 받쳐 주는 달이 없어요. 대신 「보통」인 달에 꾸준히 움직이면 돼요.') + '</p>' +
+    (firstHiY ? '<p>해 단위로는 <b>' + firstHiY.year + '년</b>이 ' + (firstHiY.year === A.nowY ? '바로 올해예요.' : '가장 가까운 좋은 해예요.') + ' ' +
+      W('옮기거나 올라가는 결정을 이 해에 두면 흐름의 도움을 받아요.', (firstHiY.year - A.nowY >= 2 ? '그 전까지 준비 기간이 길게 느껴질 수 있어요. 그 사이에는 「보통」인 해에도 꾸준히 지원하면서, 자격과 경험을 쌓아 이 해에 크게 들어가는 그림을 그려 보세요.' : '이 해에 원하는 곳에 들어갈 가능성이 가장 높아요. 이 해에 지원을 집중하세요.')) + '</p>' : '');
   b += '<p>' + (A.natalYm ? esc(N) + '님 사주에는 <b>이동의 기운(역마)</b>이 있어요. ' + POS[A.natalYm.at] + ' 사람이에요.' : esc(N) + '님 사주 안에는 이동의 기운(역마)이 없어요. 타고나기를 떠도는 사람은 아니고, <b>운에서 이동 기운이 들어올 때 움직이고 싶어지는</b> 사람이에요.') + '</p>';
   if (ymYears.length) {
     b += '<ul class="plain">' + ymYears.map(function (y) {
-      return '<li><b>' + y.year + '년 (만 ' + y.age + '세)</b> — ' + (y.v === 'hi' ? '이동 기운과 좋은 흐름이 같이 와요. <b>옮기고 싶은 마음과 옮길 조건이 같이 오는 해</b>예요.' : y.v === 'warn' ? '이동 기운이 오지만 흐름이 무거워요. 이 해의 이동은 지쳐서 떠나는 이동일 때가 많아요.' : '이동 기운이 들어와요. 움직이고 싶은 마음이 커지니, 조건을 꼼꼼히 비교해 보고 움직이세요.') + '</li>';
+      return '<li><b>' + y.year + '년 (만 ' + y.age + '세)</b> — ' + (y.v === 'hi' ? W('이동 기운과 좋은 흐름이 같이 와요. <b>옮기고 싶은 마음과 옮길 조건이 같이 오는 해</b>예요.', '이동 기운과 좋은 흐름이 같이 와요. <b>새 자리로 들어갈 기운과 조건이 같이 오는 해</b>예요.')
+        : y.v === 'warn' ? W('이동 기운이 오지만 흐름이 무거워요. 이 해의 이동은 지쳐서 떠나는 이동일 때가 많아요.', '이동 기운이 오지만 흐름이 무거워요. 급하게 아무 곳에나 들어가기 쉬운 해라, 조건을 꼭 확인하세요.')
+        : W('이동 기운이 들어와요. 움직이고 싶은 마음이 커지니, 조건을 꼼꼼히 비교해 보고 움직이세요.', '이동 기운이 들어와요. 새 자리로 들어갈 기회가 늘어나니 지원을 늘려 보세요.')) + '</li>';
     }).join('') + '</ul>';
   }
-  H += item('s32', '🗓️', '3-2', '사주에 이동수가 있을까?', '사주 구조', b, true);
+  H += item('s32', '🗓️', '3-2', W('이직운은 언제 들어올까?', '취업운은 언제 들어올까?'), '사주 구조', b, true);
 
   // 3-3 대운
   if (A.curD) {
     var D = A.curD, de = D.year + 9, T = A.types.main;
-    b = '<ul class="checks"><li>지금은 옮겨야 성장하는 시기인가? — <b>' + (T === '점프형' && D.v !== 'warn' ? '예, 옮길수록 커지는 시기' : D.v === 'hi' ? '아니요, 자리에서 올라가는 시기' : D.v === 'warn' ? '아니요, 지금은 다지는 시기' : '그해 운을 보고 정하면 돼요') + '</b></li>' +
-      '<li>한 조직에 오래 있으면 정체될까? — <b>' + (T === '점프형' ? '2~4년이 적당해요' : '정체보다 「지침」이 더 위험해요') + '</b></li>' +
-      '<li>움직여야 돈이 붙을까? — <b>' + (moneyInfo(A).biz ? '직접 벌수록 붙어요' : A.fac[3] >= 0.7 ? '직급을 올려야 붙어요' : '전문성 단가를 올려야 붙어요') + '</b></li></ul>';
+    var moneyAns = moneyInfo(A).biz ? '직접 벌수록 붙어요' : A.fac[3] >= 0.7 ? '직급을 올려야 붙어요' : '전문성 단가를 올려야 붙어요';
+    b = MODE === 'prep'
+      ? '<ul class="checks"><li>지금은 취업이 잘 풀리는 10년인가? — <b>' + { hi: '예, 큰 흐름이 받쳐 줘요', mid: '그해 운을 보고 움직이면 돼요', warn: '흐름이 무거워 시간이 걸릴 수 있어요' }[D.v] +
+        (firstHiY && firstHiY.year > de ? ' · 다만 그해 운이 확실히 받쳐 주는 건 ' + firstHiY.year + '년이에요' : '') + '</b></li>' +
+        '<li>첫 직장은 어떤 곳이 맞을까? — <b>' + { '승진형': '체계가 잡힌 조직', '점프형': '빨리 배울 수 있는 곳(2~4년 뒤 이동 전제)', '창업형': '작은 조직에서 전체를 경험할 곳' }[T] + '</b></li>' +
+        '<li>돈은 어떻게 붙을까? — <b>' + moneyAns + '</b></li></ul>'
+      : '<ul class="checks"><li>지금은 옮겨야 성장하는 시기인가? — <b>' + (T === '점프형' && D.v !== 'warn' ? '예, 옮길수록 커지는 시기' : D.v === 'hi' ? '아니요, 자리에서 올라가는 시기' : D.v === 'warn' ? '아니요, 지금은 다지는 시기' : '그해 운을 보고 정하면 돼요') + '</b></li>' +
+        '<li>한 조직에 오래 있으면 정체될까? — <b>' + (T === '점프형' ? '2~4년이 적당해요' : '정체보다 「지침」이 더 위험해요') + '</b></li>' +
+        '<li>움직여야 돈이 붙을까? — <b>' + moneyAns + '</b></li></ul>';
     b += '<p>사주에는 10년마다 바뀌는 큰 흐름(대운)이 있어요. ' + esc(N) + '님은 <b>' + D.year + '~' + de + '년</b>에 <b>' + { hi: '좋은 10년', mid: '무난한 10년', warn: '버티는 10년' }[D.v] + '</b>을 지나고 있어요.</p><ul class="plain">' +
       '<li><b>' + DAEUN_G[D.g] + '.</b> 10년 흐름의 윗글자가 「' + GP[D.g] + '」이에요.</li>' +
       (D.gb !== D.g ? '<li><b>' + DAEUN_G[D.gb] + '.</b> 아랫글자는 「' + GP[D.gb] + '」이에요.</li>' : '') +
       (D.why.length ? '<li><b>이 10년의 핵심 — ' + D.why.slice(0, 2).join(', ') + '.</b></li>' : '') + '</ul>';
-    b += '<p>' + (D.v === 'hi' ? '정리하면, <b>지금 10년은 큰 흐름이 ' + esc(N) + '님 편이에요.</b> 그런데도 요즘 떠나고 싶다면 그건 10년 흐름 때문이 아니라 그해의 운 때문일 가능성이 커요.'
-      : D.v === 'warn' ? '정리하면, <b>지금 10년은 버티면서 다지는 시기예요.</b> 자리를 크게 바꾸기보다 실력과 기록을 쌓아 다음 10년(' + (A.nextD ? A.nextD.year + '년~' : '') + ')을 준비하는 게 좋아요.'
+    b += '<p>' + (D.v === 'hi' ? '정리하면, <b>지금 10년은 큰 흐름이 ' + esc(N) + '님 편이에요.</b> ' + W('그런데도 요즘 떠나고 싶다면 그건 10년 흐름 때문이 아니라 그해의 운 때문일 가능성이 커요.', '준비가 길어져도 이 10년 안에 자리를 잡을 힘이 있어요. 한두 번의 불합격으로 방향을 바꾸지 마세요.')
+      : D.v === 'warn' ? '정리하면, <b>지금 10년은 버티면서 다지는 시기예요.</b> ' + W('자리를 크게 바꾸기보다', '처음부터 완벽한 곳을 찾기보다, 첫 자리에서') + ' 실력과 기록을 쌓아 다음 10년(' + (A.nextD ? A.nextD.year + '년~' : '') + ')을 준비하는 게 좋아요.'
       : '정리하면, <b>지금 10년은 크게 끌어올리지도 끌어내리지도 않는 시기예요.</b> 그해그해의 흐름을 보고 움직이면 돼요.') + '</p>';
     H += item('s33', '🧭', '3-3', '지금 ' + esc(N) + '님의 10년 흐름<br>(' + D.year + '~' + de + '년)', '계산', b, true);
   }
@@ -1040,12 +1096,28 @@ function buildCh3(A) {
     : ['채워지지 않아서 떠나고 싶은 거예요.', '「' + GP[A.ypg] + '」이 모자란 사주라, 지금 자리에서 그게 채워지지 않으면 떠나고 싶어져요.'];
   var r3 = hot.length ? [hot.map(function (y) { return y.year; }).join(' · ') + '년이 유독 무거워요.', '이 시기에는 ' + hot[0].why.slice(0, 2).join(', ') + '. <b>떠나고 싶은 마음이 가장 큰 때</b>이고, 그 마음의 상당 부분은 운에서 온 과열이에요.']
     : ['지금은 운이 특별히 무겁지 않아요.', '가까운 3년은 흐름이 크게 막히지 않아요. 그래서 지금 떠나고 싶다면 그건 운보다 <b>실제 조건</b>의 문제일 가능성이 커요. 조건을 표로 비교해 보세요.'];
+  if (MODE === 'prep') {
+    r1 = A.gwanMix ? ['기준이 둘이에요.', '사주에 「나를 붙잡는 기준」이 두 종류 같이 있어요. 「안정적인 곳」과 「하고 싶은 곳」 사이에서 계속 흔들려서, 어디에 지원해도 다른 쪽이 아쉬워요.']
+      : A.fac[3] < 0.35 ? ['정해진 틀이 없어서 불안해요.', '마감·일정이 밖에서 주어지지 않는 준비 기간이 가장 힘든 사주예요. 스스로 일정을 짜지 않으면 하루가 흐려지고, 그게 불안으로 쌓여요.']
+      : ['기준이 높아서 불안해요.', '들어갈 곳의 기준을 높게 잡는 사주라, 눈높이와 현실 사이에서 흔들려요. 「여기 가도 될까」를 너무 오래 고민하다 지원 시기를 놓치기 쉬워요.'];
+    r2 = ['준비 기간에 ' + qg(A.ypg) + iga(GP[A.ypg]) + ' 더 바닥나요.', PREP_LACK[A.ypg]];
+    r3 = hot.length ? [hot.map(function (y) { return y.year; }).join(' · ') + '년이 유독 무거워요.', '이 시기에는 ' + hot[0].why.slice(0, 2).join(', ') + '. 불합격이 이어져도 <b>실력보다 흐름의 영향이 커요.</b> 이 시기의 결과로 나를 평가하지 마세요.']
+      : ['지금은 운이 특별히 무겁지 않아요.', '가까운 3년은 흐름이 크게 막히지 않아요. 그래서 결과가 늦다면 운보다 <b>지원 전략</b>(어디에, 몇 곳에, 어떤 서류로)을 점검해 볼 때예요.'];
+  }
   var worstM2 = A.months.slice().sort(function (a, c) { return a.sc - c.sc; })[0];
   b = '<ul class="checks"><li>' + r1[0] + '</li><li>' + r2[0] + '</li><li>' + r3[0] + '</li></ul><ol class="plain">' +
     [r1, r2, r3].map(function (r) { return '<li><b>' + r[0] + '</b> ' + r[1] + '</li>'; }).join('') + '</ol>';
-  b += '<div class="step">그래서 이렇게 판단하세요</div><div class="tip"><b>오퍼가 왔을 때 체크리스트</b>① 연봉은 얼마인가<br>② ' + (A.avg !== null ? '「' + GSHORT[A.avg] + '」 쪽 부담이 지금보다 줄어드는가' : '내 강점을 쓸 수 있는 자리인가') + '<br>③ ' + NEED_CHECK[A.ypg] + '<br>→ <b>②가 줄고 ③이 채워지는 곳만</b> 진지하게 보세요. 연봉만 오르고 ②③이 그대로면 2년 뒤 똑같이 지쳐요.</div>';
-  if (worstM2.v === 'warn') b += '<div class="warnbox"><b>이것만은 꼭</b>' + worstM2.y + '년 ' + worstM2.m + '월은 앞으로 14개월 중 흐름이 가장 무거운 달이에요. 이 달에는 감정이 뜨거워지기 쉬우니 입사 수락·퇴사 결정을 하지 마세요.</div>';
-  H += item('s34', '😰', '3-4', '나가도 불안,<br>남아도 불안한 이유', '사주 구조', b, true);
+  if (MODE === 'prep') {
+    b += '<div class="step">그래서 이렇게 판단하세요</div><div class="tip"><b>합격 통보가 왔을 때 체크리스트</b>① 연봉과 근무 조건은 어떤가<br>② ' + NEED_CHECK[A.ypg] + '<br>③ ' + (A.avg !== null ? '「' + GSHORT[A.avg] + '」 쪽 부담이 너무 크지 않은가' : '내 강점을 쓸 수 있는 자리인가') +
+      '<br>→ <b>②가 채워지는 곳</b>이면 연봉이 조금 낮아도 1순위로 보세요. 첫 자리는 오래 버틸 수 있는 곳이 결국 경력이 돼요.</div>';
+    b += '<div class="tip"><b>준비 기간을 버티는 법</b>' + PREP_TIP[A.ypg] + '</div>';
+    if (worstM2.v === 'warn') b += '<div class="warnbox"><b>이것만은 꼭</b>' + worstM2.y + '년 ' + worstM2.m + '월은 앞으로 14개월 중 흐름이 가장 무거운 달이에요. 이 달에는 결과에 흔들리기 쉬우니, 「취업 포기」「아무 데나 수락」 같은 큰 결정을 미루세요.</div>';
+    H += item('s34', '😰', '3-4', '준비가 길어질 때<br>불안한 이유', '사주 구조', b, true);
+  } else {
+    b += '<div class="step">그래서 이렇게 판단하세요</div><div class="tip"><b>오퍼가 왔을 때 체크리스트</b>① 연봉은 얼마인가<br>② ' + (A.avg !== null ? '「' + GSHORT[A.avg] + '」 쪽 부담이 지금보다 줄어드는가' : '내 강점을 쓸 수 있는 자리인가') + '<br>③ ' + NEED_CHECK[A.ypg] + '<br>→ <b>②가 줄고 ③이 채워지는 곳만</b> 진지하게 보세요. 연봉만 오르고 ②③이 그대로면 2년 뒤 똑같이 지쳐요.</div>';
+    if (worstM2.v === 'warn') b += '<div class="warnbox"><b>이것만은 꼭</b>' + worstM2.y + '년 ' + worstM2.m + '월은 앞으로 14개월 중 흐름이 가장 무거운 달이에요. 이 달에는 감정이 뜨거워지기 쉬우니 입사 수락·퇴사 결정을 하지 마세요.</div>';
+    H += item('s34', '😰', '3-4', '나가도 불안,<br>남아도 불안한 이유', '사주 구조', b, true);
+  }
   H += nextBtn('t4', 'CHAPTER 4 이어보기', '커리어 하이와 인생 황금기');
   return H;
 }
@@ -1056,7 +1128,7 @@ function buildCh4(A) {
   H += chHead('CHAPTER 4.', '커리어 하이와', '인생 황금기', '일에서 가장 빛나는 때와 <em>돈이 붙는 때</em>를 짚어드려요.', '💰');
   var ten = A.years.slice(0, 11);
   var hiY = ten.filter(function (y) { return y.v === 'hi'; }), waY = ten.filter(function (y) { return y.v === 'warn'; });
-  var b = '<ul class="checks"><li>이직·직무 전환이 유리한 해 — <b>' + (hiY.length ? hiY.map(function (y) { return y.year; }).join(' · ') + '년' : '10년 안에 뚜렷한 해 없음') + '</b></li>' +
+  var b = '<ul class="checks"><li>' + W('이직·직무 전환이 유리한 해', '취업·입사가 유리한 해') + ' — <b>' + (hiY.length ? hiY.map(function (y) { return y.year; }).join(' · ') + '년' : '10년 안에 뚜렷한 해 없음') + '</b></li>' +
     '<li>창업해 볼 만한 시기 — <b>' + (A.types.lab['창업형'] === '약함' ? '따로 꼽지 않아요' : (hiY.filter(function (y) { return y.g === 1 || y.g === 2 || y.gb === 2; })[0] || hiY[0] || { year: '—' }).year + '년') + '</b></li>' +
     '<li>큰 결정을 피할 해 — <b>' + (waY.length ? waY.map(function (y) { return y.year; }).join(' · ') + '년' : '10년 안에 크게 없어요') + '</b></li></ul>';
   b += '<p class="small">해마다 부족한 기운이 들어오는지, 회복 자리가 단단해지는지 흔들리는지를 점수로 매겨 「좋은 해 / 무난한 해 / 버티는 해」로 나눴어요.</p><ul class="yrs">';
@@ -1064,9 +1136,13 @@ function buildCh4(A) {
   ten.forEach(function (y) {
     var head = y === bestTen && y.v === 'hi' ? '<b>가까운 10년 중 가장 좋은 해예요.</b> ' : '';
     var desc = y.why.length ? y.why.slice(0, 2).join(', ') + '.' : EVENT[y.g] + '.';
-    var dd = y.v === 'hi' ? '✅ 할 것 — 면접·협상·승진 도전처럼 직접 나서는 일 ❌ 안 할 것 — 결과만 기다리며 시간 보내기'
-      : y.v === 'warn' ? '✅ 할 것 — 지금 자리 지키기, 휴가·건강검진 일정을 1월에 먼저 확정 ❌ 안 할 것 — 이직·퇴사·큰 지출'
-      : '✅ 할 것 — ' + GROUP_DO[y.g] + ' ❌ 안 할 것 — 좋은 때를 기다리느라 지금 온 기회 미루기';
+    var dd = MODE === 'prep'
+      ? (y.v === 'hi' ? '✅ 할 것 — 가장 가고 싶은 곳에 지원·면접 집중 ❌ 안 할 것 — 「조금 더 준비하고」 미루기'
+        : y.v === 'warn' ? '✅ 할 것 — 자격증·포트폴리오 보강, 인턴·계약직으로 경력 쌓기 ❌ 안 할 것 — 불합격을 내 탓으로 읽기, 조건 확인 없이 아무 데나 수락'
+        : '✅ 할 것 — ' + PREP_DO[y.g].split('. ')[1] + ' ❌ 안 할 것 — 좋은 해를 기다리며 지원 멈추기')
+      : (y.v === 'hi' ? '✅ 할 것 — 면접·협상·승진 도전처럼 직접 나서는 일 ❌ 안 할 것 — 결과만 기다리며 시간 보내기'
+        : y.v === 'warn' ? '✅ 할 것 — 지금 자리 지키기, 휴가·건강검진 일정을 1월에 먼저 확정 ❌ 안 할 것 — 이직·퇴사·큰 지출'
+        : '✅ 할 것 — ' + GROUP_DO[y.g] + ' ❌ 안 할 것 — 좋은 때를 기다리느라 지금 온 기회 미루기');
     b += '<li class="' + (y.v === 'hi' ? 'up' : y.v === 'warn' ? 'down' : '') + '"><span class="y">' + y.year + '년 (만 ' + y.age + '세)</span>' + tagV(y.v, vword(y.v) + (y.ym ? ' · 이동수' : '')) +
       '<br>' + head + desc + '<span class="dd">' + dd + '</span></li>';
   });
@@ -1177,7 +1253,7 @@ function buildCh5(A) {
   if (A.R.strength.borderline) L.push('<b>기운의 세기</b> — 「강하지도 약하지도 않은」 경계에 있어서 계산 방식에 따라 판정이 달라질 수 있어요.');
   if (A.ypFallback) L.push('<b>부족한 기운</b> — 계산에서 하나로 정해지지 않아, 가장 작은 기운을 부족한 기운으로 놓고 풀었어요.');
   L.push('<b>대운 시작 나이</b> — 앱마다 계산 방식이 달라 10년 흐름이 바뀌는 해가 1년쯤 다르게 보일 수 있어요.');
-  L.push('<b>날짜별 운</b> — 이직운 캘린더는 사주 해석 중 근거가 가장 약한 부분이에요. 해나 달의 흐름과 다르면 해·달을 따르세요.');
+  L.push('<b>날짜별 운</b> — ' + W('이직운', '취업운') + ' 캘린더는 사주 해석 중 근거가 가장 약한 부분이에요. 해나 달의 흐름과 다르면 해·달을 따르세요.');
   L.push('<b>직무 연결</b> — 사주를 직업에 연결하는 기준은 옛 책에 없어서 이 서비스가 정한 기준이에요. 기준이 바뀌면 TOP3와 커리어 유형이 같이 바뀔 수 있어요.');
   L.push('<b>음력</b> — 이 계산기는 양력만 받아요. 음력 생일은 양력으로 바꿔서 넣어야 정확해요.');
   H += item('s54', '⚠️', 'D', '확인이 필요한 부분', '', '<ul class="plain">' + L.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>');
@@ -1207,10 +1283,12 @@ function shift32(IN) {
   var tot = IN.hour * 60 + (IN.minute || 0) - 32, ds = 0;
   if (tot < 0) { tot += 1440; ds = -1; }
   var d = new Date(Date.UTC(IN.year, IN.month - 1, IN.day + ds));
-  return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate(), hour: Math.floor(tot / 60), minute: tot % 60, gender: IN.gender, name: IN.name };
+  return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate(), hour: Math.floor(tot / 60), minute: tot % 60, gender: IN.gender, name: IN.name, status: IN.status };
 }
 function render(IN, corrected) {
   CUR = { IN: IN, corrected: corrected };
+  MODE = IN.status === 'prep' ? 'prep' : 'work';
+  $('t3').textContent = '3 · ' + W('떠나고 싶은 이유', '취업 타이밍');
   var A = analyze(corrected ? shift32(IN) : IN);
   A.IN = IN; A.N = IN.name || '당신'; A.corrected = corrected;
   $('head').innerHTML = buildHead(A);
@@ -1225,7 +1303,7 @@ function render(IN, corrected) {
   var fb = $('fixBtn'); if (fb) fb.addEventListener('click', function () { render(IN, true); });
   var ub = $('unfixBtn'); if (ub) ub.addEventListener('click', function () { render(IN, false); });
   calInit(A);
-  var q = '?y=' + IN.year + '&m=' + IN.month + '&d=' + IN.day + (IN.hour === null ? '' : '&h=' + IN.hour + '&mi=' + IN.minute) + '&g=' + IN.gender + (IN.name ? '&n=' + encodeURIComponent(IN.name) : '') + (corrected ? '&c=1' : '');
+  var q = '?y=' + IN.year + '&m=' + IN.month + '&d=' + IN.day + (IN.hour === null ? '' : '&h=' + IN.hour + '&mi=' + IN.minute) + '&g=' + IN.gender + '&s=' + MODE + (IN.name ? '&n=' + encodeURIComponent(IN.name) : '') + (corrected ? '&c=1' : '');
   try { history.replaceState(null, '', location.pathname + q); } catch (e) {}
   window.scrollTo(0, 0);
 }
@@ -1234,7 +1312,7 @@ function calInit(A) {
   var cur = 0, M = A.cal, today = A.now;
   function draw() {
     var c = M[cur], first = new Date(c.y, c.m - 1, 1).getDay(), days = new Date(c.y, c.m, 0).getDate();
-    var h = '<div><div class="mn">' + EN[c.m - 1] + '</div><div class="yr">' + c.y + '</div><div class="gd">이직운이 좋은 날<b>' + c.good.length + (c.good.length === 1 ? ' Day' : ' Days') + '</b></div><div class="mo">' + tagV(c.v, '이 달의 흐름 · ' + { hi: '좋음', mid: '보통', warn: '조심' }[c.v]) + '</div></div><div class="dots">';
+    var h = '<div><div class="mn">' + EN[c.m - 1] + '</div><div class="yr">' + c.y + '</div><div class="gd">' + W('이직운', '취업운') + '이 좋은 날<b>' + c.good.length + (c.good.length === 1 ? ' Day' : ' Days') + '</b></div><div class="mo">' + tagV(c.v, '이 달의 흐름 · ' + { hi: '좋음', mid: '보통', warn: '조심' }[c.v]) + '</div></div><div class="dots">';
     'SMTWTFS'.split('').forEach(function (d) { h += '<span class="w">' + d + '</span>'; });
     for (var i = 0; i < first; i++) h += '<span class="d e"></span>';
     for (var d = 1; d <= days; d++) {
@@ -1275,7 +1353,8 @@ function calInit(A) {
     if (err) { $('err').textContent = err; return; }
     $('err').textContent = '';
     var IN = { year: +by.value, month: +bm.value, day: +bd.value, hour: bh.value === 'unknown' ? null : +bh.value, minute: bh.value === 'unknown' ? 0 : +bi.value,
-      gender: document.querySelector('input[name=g]:checked').value, name: $('name').value.trim() };
+      gender: document.querySelector('input[name=g]:checked').value, name: $('name').value.trim(),
+      status: document.querySelector('input[name=s]:checked').value };
     try { render(IN, false); } catch (ex) { $('err').textContent = '계산 중 문제가 생겼어요. 입력값을 다시 확인해 주세요.'; if (window.console) console.error(ex); }
   });
   $('again').addEventListener('click', function () {
@@ -1293,7 +1372,8 @@ function calInit(A) {
   // URL로 바로 열기: ?y=&m=&d=&h=&mi=&g=&n=&c=1
   var Q = new URLSearchParams(location.search);
   if (Q.get('y') && Q.get('m') && Q.get('d')) {
-    var IN = { year: +Q.get('y'), month: +Q.get('m'), day: +Q.get('d'), hour: Q.get('h') === null || Q.get('h') === '' ? null : +Q.get('h'), minute: +(Q.get('mi') || 0), gender: Q.get('g') === 'M' ? 'M' : 'F', name: (Q.get('n') || '').slice(0, 12) };
+    var IN = { year: +Q.get('y'), month: +Q.get('m'), day: +Q.get('d'), hour: Q.get('h') === null || Q.get('h') === '' ? null : +Q.get('h'), minute: +(Q.get('mi') || 0), gender: Q.get('g') === 'M' ? 'M' : 'F', name: (Q.get('n') || '').slice(0, 12), status: Q.get('s') === 'prep' ? 'prep' : 'work' };
+    document.querySelector('input[name=s][value=' + IN.status + ']').checked = true;
     by.value = IN.year; bm.value = IN.month; days(); bd.value = IN.day; bh.value = IN.hour === null ? 'unknown' : IN.hour; bi.value = IN.minute; bi.disabled = IN.hour === null;
     $('name').value = IN.name; document.querySelector('input[name=g][value=' + IN.gender + ']').checked = true;
     try { render(IN, Q.get('c') === '1' && IN.hour !== null); } catch (ex) { if (window.console) console.error(ex); }
